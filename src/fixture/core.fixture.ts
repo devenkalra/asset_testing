@@ -1,6 +1,6 @@
 import { test as baseTest } from '@playwright/test';
 import { HomePage } from '../pages/modules/home_page';
-import { getEnvTestVersion } from '../utils/setUp';
+import { getEnvTestVersion } from '../utils/setup';
 import { CommonComponent } from '../pages/modules/common';
 
 type TestFixtures = {
