@@ -16,6 +16,7 @@
 		"prettier": "^3.2.5"
 	},
 	"scripts": {
-		"test": "npx playwright test"
+		"test": "npx playwright test",
+		"test-github": "npx playwright test --reporter=github"
 	}
 }

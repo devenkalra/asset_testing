@@ -1,0 +1,43 @@
+name: Playwright testing
+run-name: ${{ github.actor }} is running Playwright testing on ${{ github.ref_name }}
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Install Playwright Browsers
+        run: npx playwright install
+
+      - name: Execute Automation Test
+        run: yarn test-github
+
+      - name: Upload HTML overview result
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: html-report
+          path: playwright/playwright-report/index.html
+          retention-days: 7
+
+      - name: Upload playwright trace. To troubleshoot failures, extract .zip and investigate.
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright/playwright-report
+          retention-days: 7
