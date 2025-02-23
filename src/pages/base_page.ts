@@ -13,6 +13,7 @@ export class BasePage {
 
 	async goto(path: string) {
 		await this.page.goto(`https://${this.domain}${path}`);
+		await this.page.waitForLoadState('networkidle');
 	}
 	getLocator(selector: string, index = 0) {
 		return this.page.locator(selector).nth(index);
@@ -104,5 +105,8 @@ export class BasePage {
 	}
 	async validateElementToHaveAttributeWithValue(locator: string, attribute: string, value: string) {
 		await expect(this.getLocator(locator)).toHaveAttribute(attribute, value);
+	}
+	async selectElementOption(locator: string, option: string) {
+		await this.getLocator(locator).selectOption(option);
 	}
 }

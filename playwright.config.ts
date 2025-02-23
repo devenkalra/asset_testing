@@ -31,7 +31,13 @@ export default defineConfig({
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: 'on',
 		headless: true,
+		actionTimeout: 10 * 1000,
 	},
+	expect: {
+		timeout: 10 * 1000,
+	},
+	timeout: 2 * 60 * 1000,
+	globalTimeout: 10 * 10 * 1000,
 
 	/* Configure projects for major browsers */
 	projects: [
@@ -41,6 +47,7 @@ export default defineConfig({
 				...devices['iPhone 15'],
 				browserName: 'chromium',
 				isMobile: true,
+				permissions: [],
 			},
 		},
 
