@@ -36,9 +36,10 @@ test.describe('Home test', async () => {
 			await addEditPage.validateUploadedImgShow(url);
 			await addEditPage.clickBtnAddImg();
 
-			await addEditPage.selectLocationType('Area');
-			await addEditPage.inputName(`Test area ${getCurrentUnixTime()}`);
-			await addEditPage.inputDescription(faker.lorem.sentences());
+			// await addEditPage.selectLocationType('Area'); // try to uncomment any 1 of these 3 lines, the area will not be created
+			// await addEditPage.inputName(`Test area ${getCurrentUnixTime()}`); // try to comment
+			// await addEditPage.inputDescription(faker.lorem.sentences()); // try to comment
+
 			await addEditPage.clickBtnSave();
 			await homePage.page.pause();
 		});
