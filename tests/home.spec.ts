@@ -10,6 +10,7 @@ test.describe('Home test', async () => {
 		let url: string = '';
 		let testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 		let testAreaDesc: string = faker.lorem.sentences();
+		let testAreaName2: string = `Test area edited ${getCurrentUnixTime()}`;
 
 		await test.step('1. Go to Home page', async () => {
 			await homePage.goto('');
@@ -52,6 +53,30 @@ test.describe('Home test', async () => {
 
 		await test.step('3. Validate new area show on home page', async () => {
 			await homePage.validateAreaShowOnHomePage(testAreaName);
+		});
+
+		await test.step('4. Go to that area detail page, validate detail page display correct', async () => {
+			await homePage.clickOnArea(testAreaName);
+			await commonComponent.detailPage.validateShowDetailPage();
+			await commonComponent.detailPage.validateDetailTitleIs(testAreaName);
+			await commonComponent.detailPage.valdiateHaveAreaBoxItemInside(0, 0, 0);
+		});
+
+		await test.step('5. Edit selected area, validate successful editted', async () => {
+			await commonComponent.detailPage.clickOnShowOption();
+			await commonComponent.detailPage.validateShowActionOptions();
+			await commonComponent.detailPage.clickEditOption();
+			await addEditPage.inputName(testAreaName2);
+			await addEditPage.page.waitForTimeout(2000);
+			await addEditPage.clickBtnSave();
+			await commonComponent.detailPage.validateDetailTitleIs(testAreaName2);
+		});
+
+		await test.step('6. Delete selected area, validate successful deleted', async () => {
+			await commonComponent.detailPage.clickOnShowOption();
+			await commonComponent.detailPage.validateShowActionOptions();
+			await commonComponent.detailPage.clickDeleteOption();
+			await homePage.validateAreaNotShowOnHomePage(testAreaName2);
 		});
 	});
 });

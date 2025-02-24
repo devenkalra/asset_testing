@@ -18,6 +18,10 @@ export class HomePage extends BasePage {
 		await this.validateElementVisible(this.locators.areaContainerByAreaName(areaName));
 	}
 
+	async validateAreaNotShowOnHomePage(areaName: string) {
+		await this.validateElementNotVisible(this.locators.areaContainerByAreaName(areaName));
+	}
+
 	async clickOnArea(areaName: string) {
 		await this.clickLocator(this.locators.areaContainerByAreaName(areaName));
 	}
