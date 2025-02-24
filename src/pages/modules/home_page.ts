@@ -11,11 +11,17 @@ export class HomePage extends BasePage {
 		areaContainerByAreaName: (areaName: string) => {
 			return `//div[@class='child-img-2-container'][div[text()='${areaName}']]`;
 		},
+		listFullscreenIcon: '.lucide-fullscreen',
+		fullScreenOverlay: '.full-screen-image-overlay',
 	};
 
 	async validateAreaShowOnHomePage(areaName: string) {
 		await this.validateElementNotToHaveCount(this.locators.listAreaName, 0);
 		await this.validateElementVisible(this.locators.areaContainerByAreaName(areaName));
+	}
+
+	async validateHomePageHaveArea() {
+		await this.validateElementNotToHaveCount(this.locators.listAreaName, 0);
 	}
 
 	async validateAreaNotShowOnHomePage(areaName: string) {
@@ -28,5 +34,19 @@ export class HomePage extends BasePage {
 
 	async validateShowMultipleAreaFor(areaName: string, count: number) {
 		await this.validateElementToHaveCount(this.locators.areaContainerByAreaName(areaName), count);
+	}
+
+	async clickOnAnyFullScreenIcon() {
+		await (
+			await this.getRandomElementFromListElements(this.locators.listFullscreenIcon)
+		).element.click();
+	}
+
+	async validateCurrentStateIsFullScreenImg() {
+		await this.validateElementVisible(this.locators.fullScreenOverlay);
+	}
+
+	async clickOnImgOfFullScreen() {
+		await this.clickLocator(this.locators.fullScreenOverlay);
 	}
 }

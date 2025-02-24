@@ -110,4 +110,24 @@ test.describe('Home test', async () => {
 			await homePage.validateShowMultipleAreaFor(testAreaName, 2);
 		});
 	});
+
+	test('User can view or exit fullsize of area @TC_HOME_03', async ({
+		homePage,
+		commonComponent,
+	}) => {
+		await test.step('1. Go to Home page', async () => {
+			await homePage.goto('');
+			await commonComponent.bottomNav.validateShowBottomNav();
+		});
+
+		await test.step('2. View fullsize of any area, user will turn into fullsize mode', async () => {
+			await homePage.clickOnAnyFullScreenIcon();
+			await homePage.validateCurrentStateIsFullScreenImg();
+		});
+
+		await test.step('3. Can exit fullsize mode by click on the image', async () => {
+			await homePage.clickOnImgOfFullScreen();
+			await homePage.validateHomePageHaveArea();
+		});
+	});
 });
