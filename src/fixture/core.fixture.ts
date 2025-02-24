@@ -10,7 +10,7 @@ type TestFixtures = {
 	commonComponent: CommonComponent;
 };
 
-const APP_URL = getEnvTestVersion(8);
+const APP_URL = getEnvTestVersion(9);
 
 export const test = baseTest.extend<TestFixtures>({
 	homePage: async ({ page }, use) => {

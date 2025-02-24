@@ -25,4 +25,8 @@ export class HomePage extends BasePage {
 	async clickOnArea(areaName: string) {
 		await this.clickLocator(this.locators.areaContainerByAreaName(areaName));
 	}
+
+	async validateShowMultipleAreaFor(areaName: string, count: number) {
+		await this.validateElementToHaveCount(this.locators.areaContainerByAreaName(areaName), count);
+	}
 }

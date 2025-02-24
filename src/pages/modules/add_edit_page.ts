@@ -15,13 +15,20 @@ export class AddEditPage extends BasePage {
 		iconAddPhoto: 'div.add-label+div svg',
 		popupUploadImage: '.capture-popup',
 		btnClosePopupUpload: '.popup-close-icon',
-		btnSelectManualUploadMethod: "//button[@class='media-capture-control-button'][2]",
+		btnSelectManualUploadMethod: '.media-capture-control-button .lucide-file-plus',
 		btnSelectFile: "//div[@class='media-select-container']//button[text()='Select Files']",
 		previewImgBySrc: (src: string) => {
 			return `//img[@class='capture-preview-img' and contains(@src,'${src}')]`;
 		},
 		btnAddImg: '.capture-popup .ass-button',
 		btnSave: '.bottom-menu .ass-button',
+		btnSaveAll: "//button[text()='Save All']",
+
+		// add mutiple
+		captureMutipleContainer: '.capture-container',
+		listMutipleImgContainer: (imgName: string) => {
+			return `//input[@value='${imgName}']/ancestor::div[@class='madd-img-container']`;
+		},
 	};
 
 	async selectLocationType(locationType: LocationType) {
@@ -56,6 +63,13 @@ export class AddEditPage extends BasePage {
 		await fileChooser.setFiles(imgPath);
 	}
 
+	async chooseMutipleImgToUpload(listImgPath: string[]) {
+		const fileChooserPromise = this.page.waitForEvent('filechooser');
+		await this.clickLocator(this.locators.btnSelectFile);
+		const fileChooser = await fileChooserPromise;
+		await fileChooser.setFiles(listImgPath);
+	}
+
 	async validateUploadedImgShow(imgUrl: string) {
 		await this.validateElementVisible(this.locators.previewImgBySrc(imgUrl));
 	}
@@ -67,5 +81,14 @@ export class AddEditPage extends BasePage {
 	async clickBtnSave() {
 		await this.clickLocator(this.locators.btnSave);
 		await this.clickLocator(this.locators.btnSave); // BUG: Need click 2 time to trigger
+	}
+
+	// add mutiple
+	async clickBtnSaveAll() {
+		await this.clickLocator(this.locators.btnSaveAll);
+	}
+
+	async validateShowMutiplePreviewImg(imgName: string, count: number) {
+		await this.validateElementToHaveCount(this.locators.listMutipleImgContainer(imgName), count);
 	}
 }

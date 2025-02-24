@@ -79,4 +79,35 @@ test.describe('Home test', async () => {
 			await homePage.validateAreaNotShowOnHomePage(testAreaName2);
 		});
 	});
+
+	test('User can add multiple Areas @TC_HOME_02', async ({
+		homePage,
+		commonComponent,
+		addEditPage,
+	}) => {
+		let testAreaName: string = `Test mutiple area ${getCurrentUnixTime()}`;
+
+		await test.step('1. Go to Home page', async () => {
+			await homePage.goto('');
+			await commonComponent.bottomNav.validateShowBottomNav();
+		});
+
+		await test.step('2. Successful create mutiple Areas', async () => {
+			await commonComponent.buttonAdd.validateShowAddButtons();
+			await commonComponent.buttonAdd.clickBtnAddMultiple();
+			await addEditPage.inputName(testAreaName);
+			await addEditPage.waitForTimeOut(2000);
+			await addEditPage.selectManualUploadMethod();
+			await addEditPage.chooseMutipleImgToUpload([
+				getRandomImgFileOf('Area'),
+				getRandomImgFileOf('Area'),
+			]);
+			await addEditPage.waitForTimeOut(2000);
+			await addEditPage.validateShowMutiplePreviewImg(testAreaName, 2);
+			await addEditPage.clickBtnSaveAll();
+			await homePage.waitForTimeOut(2000);
+			await homePage.reloadCurrentPage();
+			await homePage.validateShowMultipleAreaFor(testAreaName, 2);
+		});
+	});
 });

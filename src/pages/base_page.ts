@@ -109,4 +109,7 @@ export class BasePage {
 	async selectElementOption(locator: string, option: string) {
 		await this.getLocator(locator).selectOption(option);
 	}
+	async reloadCurrentPage() {
+		await this.page.reload();
+	}
 }
