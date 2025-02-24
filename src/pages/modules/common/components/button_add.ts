@@ -13,7 +13,7 @@ export class ButtonAdd extends BasePage {
 		btnAddArea: "//div[@class='what-to-add-div']//div[text()='Area']",
 		btnAddBox: "//div[@class='what-to-add-div']//div[text()='Box']",
 		btnAddItem: "//div[@class='what-to-add-div']//div[text()='Item']",
-		btnCancel: "//div[@class='what-to-add-div']//div[text()='Cancel']",
+		btnCancel: "//div[@class='what-to-add-div']//button[text()='Cancel']",
 	};
 
 	async validateShowAddButtons() {

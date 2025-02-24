@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import { BasePage } from '../../../base_page';
 
 export class DetailPage extends BasePage {
@@ -22,6 +22,13 @@ export class DetailPage extends BasePage {
 		deleteSelection: "//div[@class='animated-div']//div[text()='Delete']",
 		moveSelection: "//div[@class='animated-div']//div[text()='Move']",
 		cancelSelection: "//div[@class='animated-div']//div[text()='Cancel']",
+		listAreaContainer: "//div[contains(text(), 'Areas')]/ancestor::div[@class='children-sub-area']",
+		listBoxContainer: "//div[contains(text(), 'Boxes')]/ancestor::div[@class='children-sub-area']",
+		listItemContainer: "//div[contains(text(), 'Items')]/ancestor::div[@class='children-sub-area']",
+		listLocations: '.children-sub-area .child-img-3-container',
+		locationByName: (locName: string) => {
+			return `//div[@class='child-img-3-container'][div[@class='child-caption-overlay' and text()='${locName}']]`;
+		},
 	};
 
 	async validateShowDetailPage() {
@@ -58,5 +65,29 @@ export class DetailPage extends BasePage {
 
 	async clickDeleteOption() {
 		await this.clickLocator(this.locators.deleteSelection);
+	}
+
+	async validateAreaDiplaybyName(areaName: string) {
+		await expect(
+			this.getLocator(this.locators.listAreaContainer).locator(
+				this.locators.locationByName(areaName),
+			),
+		).toBeVisible();
+	}
+
+	async validateBoxDiplaybyName(areaName: string) {
+		await expect(
+			this.getLocator(this.locators.listBoxContainer).locator(
+				this.locators.locationByName(areaName),
+			),
+		).toBeVisible();
+	}
+
+	async validateItemDiplaybyName(areaName: string) {
+		await expect(
+			this.getLocator(this.locators.listItemContainer).locator(
+				this.locators.locationByName(areaName),
+			),
+		).toBeVisible();
 	}
 }
