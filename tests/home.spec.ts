@@ -8,6 +8,9 @@ test.describe('Home test', async () => {
 	test('User can CRUD Area @TC_HOME_01', async ({ homePage, commonComponent, addEditPage }) => {
 		let status: number;
 		let url: string = '';
+		let testAreaName: string = `Test area ${getCurrentUnixTime()}`;
+		let testAreaDesc: string = faker.lorem.sentences();
+
 		await test.step('1. Go to Home page', async () => {
 			await homePage.goto('');
 			await commonComponent.bottomNav.validateShowBottomNav();
@@ -36,12 +39,19 @@ test.describe('Home test', async () => {
 			await addEditPage.validateUploadedImgShow(url);
 			await addEditPage.clickBtnAddImg();
 
-			// await addEditPage.selectLocationType('Area'); // try to uncomment any 1 of these 3 lines, the area will not be created
-			// await addEditPage.inputName(`Test area ${getCurrentUnixTime()}`); // try to comment
-			// await addEditPage.inputDescription(faker.lorem.sentences()); // try to comment
+			await addEditPage.selectLocationType('Area'); // try to uncomment any 1 of these 3 lines, the area will not be created
+			await addEditPage.waitForTimeOut(2000);
+			await addEditPage.inputName(testAreaName); // try to comment
+			await addEditPage.waitForTimeOut(2000);
+
+			await addEditPage.inputDescription(testAreaDesc); // try to comment
+			await addEditPage.waitForTimeOut(2000);
 
 			await addEditPage.clickBtnSave();
-			await homePage.page.pause();
+		});
+
+		await test.step('3. Validate new area show on home page', async () => {
+			await homePage.validateAreaShowOnHomePage(testAreaName);
 		});
 	});
 });
