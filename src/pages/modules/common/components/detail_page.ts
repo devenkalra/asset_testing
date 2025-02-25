@@ -122,4 +122,16 @@ export class DetailPage extends BasePage {
 	async validateLocationNotDisplayByName(locationName: string) {
 		await expect(this.getLocator(this.locators.locationByName(locationName))).not.toBeVisible();
 	}
+
+	async clickArrowLeft() {
+		await this.clickLocator(this.locators.arrowLeft);
+	}
+
+	async clickArrowRight() {
+		await this.clickLocator(this.locators.arrowRight);
+	}
+
+	async clickArrowUp() {
+		await this.clickLocator(this.locators.arrowUp);
+	}
 }
