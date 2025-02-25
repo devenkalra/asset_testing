@@ -99,10 +99,10 @@ export class DetailPage extends BasePage {
 		).toHaveCount(count);
 	}
 
-	async validateItemDiplaybyName(areaName: string) {
+	async validateItemDiplaybyName(itemName: string) {
 		await expect(
 			this.getLocator(this.locators.listItemContainer).locator(
-				this.locators.locationByName(areaName),
+				this.locators.locationByName(itemName),
 			),
 		).toBeVisible();
 	}
@@ -113,5 +113,13 @@ export class DetailPage extends BasePage {
 				this.locators.locationByName(itemName),
 			),
 		).toHaveCount(count);
+	}
+
+	async clickOnLocationByName(locationName: string) {
+		await this.getLocator(this.locators.locationByName(locationName)).click();
+	}
+
+	async validateLocationNotDisplayByName(locationName: string) {
+		await expect(this.getLocator(this.locators.locationByName(locationName))).not.toBeVisible();
 	}
 }

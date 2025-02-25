@@ -221,6 +221,7 @@ test.describe('Area detail test', async () => {
 			await homePage.waitForTimeOut(2000);
 			await homePage.reloadCurrentPage();
 			await commonComponent.detailPage.validateMutipleItemDiplaybyName(testMultiItemName, 2);
+			await commonComponent.detailPage.valdiateHaveAreaBoxItemInside(2, 2, 2);
 		});
 	});
 });

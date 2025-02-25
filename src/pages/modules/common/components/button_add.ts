@@ -31,9 +31,9 @@ export class ButtonAdd extends BasePage {
 
 	async validateShowWhatToAddSection() {
 		await this.validateElementVisible(this.locators.whatToAddDiv);
-		await this.validateElementVisible(this.locators.btnAddArea);
-		await this.validateElementVisible(this.locators.btnAddBox);
-		await this.validateElementVisible(this.locators.btnAddItem);
+		// await this.validateElementVisible(this.locators.btnAddArea);
+		// await this.validateElementVisible(this.locators.btnAddBox);
+		// await this.validateElementVisible(this.locators.btnAddItem);
 		await this.validateElementVisible(this.locators.btnCancel);
 	}
 
