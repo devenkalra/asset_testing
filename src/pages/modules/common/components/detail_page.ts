@@ -75,12 +75,28 @@ export class DetailPage extends BasePage {
 		).toBeVisible();
 	}
 
-	async validateBoxDiplaybyName(areaName: string) {
+	async validateMutipleAreaDiplaybyName(areaName: string, count: number) {
 		await expect(
-			this.getLocator(this.locators.listBoxContainer).locator(
+			this.getLocator(this.locators.listAreaContainer).locator(
 				this.locators.locationByName(areaName),
 			),
+		).toHaveCount(count);
+	}
+
+	async validateBoxDiplaybyName(boxName: string) {
+		await expect(
+			this.getLocator(this.locators.listBoxContainer).locator(
+				this.locators.locationByName(boxName),
+			),
 		).toBeVisible();
+	}
+
+	async validateMutipleBoxDiplaybyName(boxName: string, count: number) {
+		await expect(
+			this.getLocator(this.locators.listBoxContainer).locator(
+				this.locators.locationByName(boxName),
+			),
+		).toHaveCount(count);
 	}
 
 	async validateItemDiplaybyName(areaName: string) {
@@ -89,5 +105,13 @@ export class DetailPage extends BasePage {
 				this.locators.locationByName(areaName),
 			),
 		).toBeVisible();
+	}
+
+	async validateMutipleItemDiplaybyName(itemName: string, count: number) {
+		await expect(
+			this.getLocator(this.locators.listItemContainer).locator(
+				this.locators.locationByName(itemName),
+			),
+		).toHaveCount(count);
 	}
 }

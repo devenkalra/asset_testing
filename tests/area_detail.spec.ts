@@ -38,7 +38,7 @@ test.describe('Area detail test', async () => {
 			await commonComponent.detailPage.validateDetailTitleIs(testAreaName);
 		});
 
-		await test.step('2. Create new a Area inside this Area', async () => {
+		await test.step('2. Create new Area inside this Area', async () => {
 			await commonComponent.buttonAdd.clickBtnAddSingle();
 			await commonComponent.buttonAdd.validateShowWhatToAddSection();
 			await commonComponent.buttonAdd.clickAddArea();
@@ -70,7 +70,7 @@ test.describe('Area detail test', async () => {
 			await commonComponent.detailPage.validateAreaDiplaybyName(testAreaName2);
 		});
 
-		await test.step('3. Create new a Box inside this Area', async () => {
+		await test.step('3. Create new Box inside this Area', async () => {
 			url = '';
 			await commonComponent.buttonAdd.clickBtnAddSingle();
 			await commonComponent.buttonAdd.validateShowWhatToAddSection();
@@ -103,7 +103,7 @@ test.describe('Area detail test', async () => {
 			await commonComponent.detailPage.validateBoxDiplaybyName(testBoxName);
 		});
 
-		await test.step('4. Create new a Item inside this Area', async () => {
+		await test.step('4. Create new Item inside this Area', async () => {
 			url = '';
 			await commonComponent.buttonAdd.clickBtnAddSingle();
 			await commonComponent.buttonAdd.validateShowWhatToAddSection();
@@ -143,11 +143,9 @@ test.describe('Area detail test', async () => {
 		addEditPage,
 	}) => {
 		const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
-		const testBoxName: string = `Test box ${getCurrentUnixTime()}`;
-		const testItemName: string = `Test item ${getCurrentUnixTime()}`;
-		const desc: string = faker.lorem.sentences();
-		let status: number;
-		let url: string = '';
+		const testMultiAreaName: string = `Test multi area ${getCurrentUnixTime()}`;
+		const testMultiBoxName: string = `Test multi box ${getCurrentUnixTime()}`;
+		const testMultiItemName: string = `Test multi item ${getCurrentUnixTime()}`;
 
 		await test.step('1. Create and go to Detail of test Area', async () => {
 			await homePage.goto('');
@@ -168,102 +166,61 @@ test.describe('Area detail test', async () => {
 			await commonComponent.detailPage.validateDetailTitleIs(testAreaName);
 		});
 
-		await test.step('2. Create new a Area inside this Area', async () => {
-			await commonComponent.buttonAdd.clickBtnAddSingle();
+		await test.step('2. Create new mutiple Area inside this Area', async () => {
+			await commonComponent.buttonAdd.clickBtnAddMultiple();
 			await commonComponent.buttonAdd.validateShowWhatToAddSection();
 			await commonComponent.buttonAdd.clickAddArea();
-			await addEditPage.clickIconAddPhoto();
-			await addEditPage.validatePopupUploadImageShow();
+			await addEditPage.inputName(testMultiAreaName);
+			await addEditPage.waitForTimeOut(2000);
 			await addEditPage.selectManualUploadMethod();
-			await addEditPage.page.route('**/files/upload/', async (route) => {
-				const response = await addEditPage.page.request.fetch(route.request());
-				status = response.status();
-				const responseBody = await response.json();
-				url = responseBody.location;
-				console.log(responseBody);
-				route.continue();
-			});
-			await addEditPage.chooseImgToUpload(getRandomImgFileOf('Area'));
-			await expect(async () => {
-				expect(status).toBe(200);
-				expect(url).not.toBe('');
-			}).toPass();
-			await addEditPage.validateUploadedImgShow(url);
-			await addEditPage.clickBtnAddImg();
-			await addEditPage.selectLocationType('Area');
+			await addEditPage.chooseMutipleImgToUpload([
+				getRandomImgFileOf('Area'),
+				getRandomImgFileOf('Area'),
+			]);
 			await addEditPage.waitForTimeOut(2000);
-			await addEditPage.inputName(testAreaName);
-			await addEditPage.waitForTimeOut(2000);
-			await addEditPage.inputDescription(desc);
-			await addEditPage.waitForTimeOut(2000);
-			await addEditPage.clickBtnSave();
-			await commonComponent.detailPage.validateAreaDiplaybyName(testAreaName);
+			await addEditPage.validateShowMutiplePreviewImg(testMultiAreaName, 2);
+			await addEditPage.clickBtnSaveAll();
+			await homePage.waitForTimeOut(2000);
+			await homePage.reloadCurrentPage();
+			await commonComponent.detailPage.validateMutipleAreaDiplaybyName(testMultiAreaName, 2);
 		});
 
-		await test.step('3. Create new a Box inside this Area', async () => {
-			url = '';
-			await commonComponent.buttonAdd.clickBtnAddSingle();
+		await test.step('3. Create new mutiple Boxes inside this Area', async () => {
+			await commonComponent.buttonAdd.clickBtnAddMultiple();
 			await commonComponent.buttonAdd.validateShowWhatToAddSection();
 			await commonComponent.buttonAdd.clickAddBox();
-			await addEditPage.clickIconAddPhoto();
-			await addEditPage.validatePopupUploadImageShow();
+			await addEditPage.inputName(testMultiBoxName);
+			await addEditPage.waitForTimeOut(2000);
 			await addEditPage.selectManualUploadMethod();
-			await addEditPage.page.route('**/files/upload/', async (route) => {
-				const response = await addEditPage.page.request.fetch(route.request());
-				status = response.status();
-				const responseBody = await response.json();
-				url = responseBody.location;
-				console.log(responseBody);
-				route.continue();
-			});
-			await addEditPage.chooseImgToUpload(getRandomImgFileOf('Box'));
-			await expect(async () => {
-				expect(status).toBe(200);
-				expect(url).not.toBe('');
-			}).toPass();
-			await addEditPage.validateUploadedImgShow(url);
-			await addEditPage.clickBtnAddImg();
-			await addEditPage.selectLocationType('Box');
+			await addEditPage.chooseMutipleImgToUpload([
+				getRandomImgFileOf('Box'),
+				getRandomImgFileOf('Box'),
+			]);
 			await addEditPage.waitForTimeOut(2000);
-			await addEditPage.inputName(testBoxName);
-			await addEditPage.waitForTimeOut(2000);
-			await addEditPage.inputDescription(desc);
-			await addEditPage.waitForTimeOut(2000);
-			await addEditPage.clickBtnSave();
-			await commonComponent.detailPage.validateBoxDiplaybyName(testBoxName);
+			await addEditPage.validateShowMutiplePreviewImg(testMultiBoxName, 2);
+			await addEditPage.clickBtnSaveAll();
+			await homePage.waitForTimeOut(2000);
+			await homePage.reloadCurrentPage();
+			await commonComponent.detailPage.validateMutipleBoxDiplaybyName(testMultiBoxName, 2);
 		});
 
-		await test.step('4. Create new a Item inside this Area', async () => {
-			url = '';
-			await commonComponent.buttonAdd.clickBtnAddSingle();
+		await test.step('4. Create new mutiple Items inside this Area', async () => {
+			await commonComponent.buttonAdd.clickBtnAddMultiple();
 			await commonComponent.buttonAdd.validateShowWhatToAddSection();
 			await commonComponent.buttonAdd.clickAddItem();
-			await addEditPage.clickIconAddPhoto();
-			await addEditPage.validatePopupUploadImageShow();
+			await addEditPage.inputName(testMultiItemName);
+			await addEditPage.waitForTimeOut(2000);
 			await addEditPage.selectManualUploadMethod();
-			await addEditPage.page.route('**/files/upload/', async (route) => {
-				const response = await addEditPage.page.request.fetch(route.request());
-				status = response.status();
-				const responseBody = await response.json();
-				url = responseBody.location;
-				console.log(responseBody);
-				route.continue();
-			});
-			await addEditPage.chooseImgToUpload(getRandomImgFileOf('Item'));
-			await expect(async () => {
-				expect(status).toBe(200);
-				expect(url).not.toBe('');
-			}).toPass();
-			await addEditPage.validateUploadedImgShow(url);
-			await addEditPage.clickBtnAddImg();
-			await addEditPage.selectLocationType('Item');
+			await addEditPage.chooseMutipleImgToUpload([
+				getRandomImgFileOf('Item'),
+				getRandomImgFileOf('Item'),
+			]);
 			await addEditPage.waitForTimeOut(2000);
-			await addEditPage.inputName(testItemName);
-			await addEditPage.waitForTimeOut(2000);
-			await addEditPage.inputDescription(desc);
-			await addEditPage.waitForTimeOut(2000);
-			await addEditPage.clickBtnSave();
-			await commonComponent.detailPage.validateItemDiplaybyName(testItemName);
+			await addEditPage.validateShowMutiplePreviewImg(testMultiItemName, 2);
+			await addEditPage.clickBtnSaveAll();
+			await homePage.waitForTimeOut(2000);
+			await homePage.reloadCurrentPage();
+			await commonComponent.detailPage.validateMutipleItemDiplaybyName(testMultiItemName, 2);
 		});
 	});
 });
