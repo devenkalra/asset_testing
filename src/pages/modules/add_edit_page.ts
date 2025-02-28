@@ -1,5 +1,4 @@
 import { Page, expect } from '@playwright/test';
-
 import { BasePage } from '../base_page';
 import { LocationType } from '../../types/app';
 
@@ -31,6 +30,7 @@ export class AddEditPage extends BasePage {
 		},
 	};
 
+
 	async selectLocationType(locationType: LocationType) {
 		await this.selectElementOption(this.locators.dropdownSelectType, locationType);
 	}
@@ -40,12 +40,13 @@ export class AddEditPage extends BasePage {
 	}
 
 	async inputDescription(description: string) {
+		await this.clickLocator(this.locators.txbDescription);
 		await this.inputText(this.locators.txbDescription, description);
 	}
 
 	async clickIconAddPhoto() {
 		await this.clickLocator(this.locators.iconAddPhoto);
-		await this.clickLocator(this.locators.iconAddPhoto); // BUG: Need click 2 time to trigger
+		 // await this.clickLocator(this.locators.iconAddPhoto); // BUG: Need click 2 time to trigger
 	}
 
 	async validatePopupUploadImageShow() {
@@ -80,7 +81,7 @@ export class AddEditPage extends BasePage {
 
 	async clickBtnSave() {
 		await this.clickLocator(this.locators.btnSave);
-		await this.clickLocator(this.locators.btnSave); // BUG: Need click 2 time to trigger
+		//await this.clickLocator(this.locators.btnSave); // BUG: Need click 2 time to trigger
 	}
 
 	// add mutiple
