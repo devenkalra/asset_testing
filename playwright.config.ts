@@ -28,13 +28,13 @@ export default defineConfig({
 
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: 'on',
-		headless: false,
+		headless: true, //for running on github action. run cmd line by addition --headed
 		actionTimeout: 2 * 1000,
 	},
 	expect: {
 		timeout: 5 * 1000,
 	},
-/* Timeout settings
+	/* Timeout settings
 	timeout: 2 * 60 * 1000,
 	globalTimeout: 10 * 60 * 1000,
  */
