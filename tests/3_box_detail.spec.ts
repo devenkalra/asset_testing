@@ -1,7 +1,6 @@
 import { test } from '../src/fixture/core.fixture';
 import { getRandomImgFileOf } from '../src/utils/file';
 import { getCurrentUnixTime } from '../src/utils/time';
-import { act } from '@testing-library/react';
 
 test.describe('Box detail test', async () => {
 	test('Can CRUD box @TC_BOX_01', async ({ homePage, commonComponent, addEditPage }) => {
@@ -16,11 +15,11 @@ test.describe('Box detail test', async () => {
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.buttonAdd.validateShowAddButtons();
 			await commonComponent.buttonAdd.clickBtnAddMultiple();
-			await act(async () => {await addEditPage.inputName(testAreaName);});
+			await addEditPage.inputName(testAreaName);
 			await addEditPage.selectManualUploadMethod();
-			await act(async () => {await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Area')]);});
+			await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Area')]);
 			await addEditPage.validateShowMutiplePreviewImg(testAreaName, 1);
-			await act(async () => {await addEditPage.clickBtnSaveAll();});
+			await addEditPage.clickBtnSaveAll();
 			await homePage.validateAreaShowOnHomePage(testAreaName);
 			await homePage.clickOnArea(testAreaName);
 			await commonComponent.detailPage.validateDetailTitleIs(testAreaName);
@@ -30,12 +29,11 @@ test.describe('Box detail test', async () => {
 			await commonComponent.buttonAdd.clickBtnAddMultiple();
 			await commonComponent.buttonAdd.validateShowWhatToAddSection();
 			await commonComponent.buttonAdd.clickAddBox();
-			await act(async () => {await addEditPage.inputName(testBoxName);});
+			await addEditPage.inputName(testBoxName);
 			await addEditPage.selectManualUploadMethod();
-			await act(async () => {await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Box')]);});
+			await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Box')]);
 			await addEditPage.validateShowMutiplePreviewImg(testBoxName, 1);
-			await act(async () => {await addEditPage.clickBtnSaveAll();});
-
+			await addEditPage.clickBtnSaveAll();
 			await commonComponent.detailPage.validateBoxDiplaybyName(testBoxName);
 		});
 
@@ -45,7 +43,7 @@ test.describe('Box detail test', async () => {
 			await commonComponent.detailPage.clickOnShowOption();
 			await commonComponent.detailPage.validateShowActionOptions();
 			await commonComponent.detailPage.clickEditOption();
-			await act(async () => {await addEditPage.inputName(testBoxName2);});
+			await addEditPage.inputName(testBoxName2);
 			await addEditPage.clickBtnSave();
 			await commonComponent.detailPage.validateDetailTitleIs(testBoxName2);
 		});
@@ -54,11 +52,11 @@ test.describe('Box detail test', async () => {
 			await commonComponent.buttonAdd.clickBtnAddMultiple();
 			await commonComponent.buttonAdd.validateShowWhatToAddSection();
 			await commonComponent.buttonAdd.clickAddBox();
-			await act(async () => {await addEditPage.inputName(testBoxName3);});
+			await addEditPage.inputName(testBoxName3);
 			await addEditPage.selectManualUploadMethod();
-			await act(async () => {await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Box')]);});
+			await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Box')]);
 			await addEditPage.validateShowMutiplePreviewImg(testBoxName3, 1);
-			await act(async () => {await addEditPage.clickBtnSaveAll();});
+			await addEditPage.clickBtnSaveAll();
 
 			await commonComponent.detailPage.validateBoxDiplaybyName(testBoxName3);
 		});
@@ -67,12 +65,11 @@ test.describe('Box detail test', async () => {
 			await commonComponent.buttonAdd.clickBtnAddMultiple();
 			await commonComponent.buttonAdd.validateShowWhatToAddSection();
 			await commonComponent.buttonAdd.clickAddItem();
-			await act(async () => {await addEditPage.inputName(testItemName);});
+			await addEditPage.inputName(testItemName);
 			await addEditPage.selectManualUploadMethod();
-			await act(async () => {await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Item')]);});
+			await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Item')]);
 			await addEditPage.validateShowMutiplePreviewImg(testItemName, 1);
-			await act(async () => {await addEditPage.clickBtnSaveAll();});
-
+			await addEditPage.clickBtnSaveAll();
 			await commonComponent.detailPage.validateItemDiplaybyName(testItemName);
 		});
 
@@ -96,17 +93,12 @@ test.describe('Box detail test', async () => {
 			await commonComponent.detailPage.validateLocationNotDisplayByName(testItemName);
 		});
 
-		await test.step('8. Can delete 2nd box will return home page', async () => {
+		await test.step('8. Can delete 2nd box will return parent area', async () => {
 			await commonComponent.detailPage.clickOnShowOption();
 			await commonComponent.detailPage.validateShowActionOptions();
-			await act(async () => {await commonComponent.detailPage.clickDeleteOption();})
-			await homePage.validateAreaNotShowOnHomePage(testAreaName);
-			await homePage.clickOnArea(testAreaName);
+			await commonComponent.detailPage.clickDeleteOption();
 			await commonComponent.detailPage.validateDetailTitleIs(testAreaName);
-			await commonComponent.detailPage.clickOnLocationByName(testBoxName);
-			await commonComponent.detailPage.validateDetailTitleIs(testBoxName);
 			await commonComponent.detailPage.validateLocationNotDisplayByName(testBoxName2);
-			// BUG: Delete box inside box will delete parent box also
 		});
 	});
 });

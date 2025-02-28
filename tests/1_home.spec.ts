@@ -3,7 +3,6 @@ import { test } from '../src/fixture/core.fixture';
 import { getRandomImgFileOf } from '../src/utils/file';
 import { getCurrentUnixTime } from '../src/utils/time';
 import { faker } from '@faker-js/faker';
-import { act } from '@testing-library/react';
 
 test.describe('Home test', async () => {
 	test('User can CRUD Area @TC_HOME_01', async ({ homePage, commonComponent, addEditPage }) => {
@@ -41,21 +40,10 @@ test.describe('Home test', async () => {
 			await addEditPage.validateUploadedImgShow(url);
 			await addEditPage.clickBtnAddImg();
 
-			await act(async () => {
-				await addEditPage.selectLocationType('Area'); // try to uncomment any 1 of these 3 lines, the area will not be created
-			});
-
-			await act(async () => {
-				await addEditPage.inputName(testAreaName); // try to comment
-			});
-
-			await act(async () => {
-				await addEditPage.inputDescription(testAreaDesc); // try to comment
-			});
-
-			await act(async () => {
-				await addEditPage.clickBtnSave();
-			})
+			await addEditPage.selectLocationType('Area');
+			await addEditPage.inputName(testAreaName);
+			await addEditPage.inputDescription(testAreaDesc);
+			await addEditPage.clickBtnSave();
 		});
 
 		await test.step('3. Validate new area show on home page', async () => {
@@ -74,10 +62,7 @@ test.describe('Home test', async () => {
 			await commonComponent.detailPage.validateShowActionOptions();
 			await commonComponent.detailPage.clickEditOption();
 			await addEditPage.inputName(testAreaName2);
-			await addEditPage.page.waitForTimeout(2000);
-			await act(async () => {
-				await addEditPage.clickBtnSave();
-			});
+			await addEditPage.clickBtnSave();
 			await commonComponent.detailPage.validateDetailTitleIs(testAreaName2);
 		});
 
@@ -90,10 +75,10 @@ test.describe('Home test', async () => {
 	});
 
 	test('User can add multiple Areas @TC_HOME_02', async ({
-																													 homePage,
-																													 commonComponent,
-																													 addEditPage,
-																												 }) => {
+		homePage,
+		commonComponent,
+		addEditPage,
+	}) => {
 		let testAreaName: string = `Test mutiple area ${getCurrentUnixTime()}`;
 
 		await test.step('1. Go to Home page', async () => {
@@ -105,24 +90,21 @@ test.describe('Home test', async () => {
 			await commonComponent.buttonAdd.validateShowAddButtons();
 			await commonComponent.buttonAdd.clickBtnAddMultiple();
 			await addEditPage.inputName(testAreaName);
-			await addEditPage.waitForTimeOut(2000);
 			await addEditPage.selectManualUploadMethod();
 			await addEditPage.chooseMutipleImgToUpload([
 				getRandomImgFileOf('Area'),
 				getRandomImgFileOf('Area'),
 			]);
-			await addEditPage.waitForTimeOut(2000);
 			await addEditPage.validateShowMutiplePreviewImg(testAreaName, 2);
 			await addEditPage.clickBtnSaveAll();
-			await homePage.waitForTimeOut(2000);
 			await homePage.validateShowMultipleAreaFor(testAreaName, 2);
 		});
 	});
 
 	test('User can view or exit fullsize of area @TC_HOME_03', async ({
-																																			homePage,
-																																			commonComponent,
-																																		}) => {
+		homePage,
+		commonComponent,
+	}) => {
 		await test.step('1. Go to Home page', async () => {
 			await homePage.goto('');
 			await commonComponent.bottomNav.validateShowBottomNav();

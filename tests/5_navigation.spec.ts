@@ -2,7 +2,7 @@ import { test } from '../src/fixture/core.fixture';
 import { getRandomImgFileOf } from '../src/utils/file';
 import { getCurrentUnixTime } from '../src/utils/time';
 
-test.describe('Box detail test', async () => {
+test.describe('Navigation test', async () => {
 	test('Can navigate Left, Right, Outside correct @TC_NAV_01', async ({
 		homePage,
 		commonComponent,
@@ -18,26 +18,18 @@ test.describe('Box detail test', async () => {
 			await commonComponent.buttonAdd.validateShowAddButtons();
 			await commonComponent.buttonAdd.clickBtnAddMultiple();
 			await addEditPage.inputName(testAreaName);
-			await addEditPage.waitForTimeOut(2000);
 			await addEditPage.selectManualUploadMethod();
 			await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Area')]);
-			await addEditPage.waitForTimeOut(2000);
 			await addEditPage.validateShowMutiplePreviewImg(testAreaName, 1);
 			await addEditPage.clickBtnSaveAll();
-			await homePage.waitForTimeOut(2000);
-			await homePage.reloadCurrentPage();
 			await homePage.validateAreaShowOnHomePage(testAreaName);
 
 			await commonComponent.buttonAdd.clickBtnAddMultiple();
 			await addEditPage.inputName(testAreaName2);
-			await addEditPage.waitForTimeOut(2000);
 			await addEditPage.selectManualUploadMethod();
 			await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Area')]);
-			await addEditPage.waitForTimeOut(2000);
 			await addEditPage.validateShowMutiplePreviewImg(testAreaName2, 1);
 			await addEditPage.clickBtnSaveAll();
-			await homePage.waitForTimeOut(2000);
-			await homePage.reloadCurrentPage();
 			await homePage.validateAreaShowOnHomePage(testAreaName2);
 		});
 
@@ -48,14 +40,10 @@ test.describe('Box detail test', async () => {
 			await commonComponent.buttonAdd.validateShowWhatToAddSection();
 			await commonComponent.buttonAdd.clickAddBox();
 			await addEditPage.inputName(testBoxName);
-			await addEditPage.waitForTimeOut(2000);
 			await addEditPage.selectManualUploadMethod();
 			await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Box')]);
-			await addEditPage.waitForTimeOut(2000);
 			await addEditPage.validateShowMutiplePreviewImg(testBoxName, 1);
 			await addEditPage.clickBtnSaveAll();
-			await homePage.waitForTimeOut(2000);
-			await homePage.reloadCurrentPage();
 			await commonComponent.detailPage.validateBoxDiplaybyName(testBoxName);
 		});
 

@@ -17,7 +17,7 @@ type TestFixtures = {
 // let version = (process.env.VERSION ? process.env.VERSION : 10) as number;
 // console.log('App version: ', version);
 
-const APP_URL = getEnvTestVersion(7);
+const APP_URL = getEnvTestVersion(6);
 
 export const test = baseTest.extend<TestFixtures>({
 	homePage: async ({ page }, use) => {

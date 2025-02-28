@@ -30,7 +30,6 @@ export class AddEditPage extends BasePage {
 		},
 	};
 
-
 	async selectLocationType(locationType: LocationType) {
 		await this.selectElementOption(this.locators.dropdownSelectType, locationType);
 	}
@@ -46,7 +45,6 @@ export class AddEditPage extends BasePage {
 
 	async clickIconAddPhoto() {
 		await this.clickLocator(this.locators.iconAddPhoto);
-		 // await this.clickLocator(this.locators.iconAddPhoto); // BUG: Need click 2 time to trigger
 	}
 
 	async validatePopupUploadImageShow() {
@@ -81,7 +79,6 @@ export class AddEditPage extends BasePage {
 
 	async clickBtnSave() {
 		await this.clickLocator(this.locators.btnSave);
-		//await this.clickLocator(this.locators.btnSave); // BUG: Need click 2 time to trigger
 	}
 
 	// add mutiple
