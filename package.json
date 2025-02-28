@@ -19,6 +19,6 @@
 	},
 	"scripts": {
 		"test": "npx playwright test --headed",
-		"test-github": "npx playwright test --reporter=github --reporter=html --reporter=list"
+		"test-github": "npx playwright test"
 	}
 }
