@@ -1,0 +1,11 @@
+Added ids in edit page controls
+replaced sleep with act
+Needed a click on the description before adding text
+Fixed Save Double click by changing the way blur is handled
+Fixed the update of the home screen after a save, no need to refresh the page
+
+
+Will be adding digit in multi edit names
+
+3_box_detailspec line 103 (should check for it NOT to be there after delete)
+
