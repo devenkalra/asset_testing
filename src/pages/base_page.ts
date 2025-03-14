@@ -12,8 +12,6 @@ export class BasePage {
 		this.domain = domain;
 	}
 
-
-
 	async goto(path: string) {
 		await this.page.goto(`https://${this.domain}${path}`);
 		// FOR DEVEN await this.page.goto(`${this.domain}${path}`);
@@ -70,6 +68,10 @@ export class BasePage {
 
 	async waitForRendered() {
 		await this.page.waitForLoadState('domcontentloaded');
+	}
+
+	async waitForNetworkLoad() {
+		await this.page.waitForLoadState('networkidle');
 	}
 
 	async validateCheckboxChecked(locator: string) {
