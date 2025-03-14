@@ -5,6 +5,8 @@ import { getRandomIndex } from './random';
 
 export const ASSETS_PATH = path.join(__dirname, '..', '..', '/assets');
 
+export const DOWNLOAD_PATH = path.join(__dirname, '..', '..', '/downloads');
+
 export const getFiles = (dir: string): string[] => {
 	let results: string[] = [];
 	const files = fs.readdirSync(dir);
@@ -19,4 +21,9 @@ export const getRandomImgFileOf = (imgType: LocationType) => {
 	const imgPath = path.join(ASSETS_PATH, `/img/${imgType.toLowerCase()}`);
 	const files = getFiles(imgPath);
 	return files[getRandomIndex(files.length)];
+};
+
+export const getFileFromDownloadDir = (fileName: string) => {
+	const imgPath = path.join(DOWNLOAD_PATH, `/${fileName}`);
+	return imgPath;
 };
