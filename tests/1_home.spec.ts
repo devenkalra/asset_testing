@@ -20,9 +20,9 @@ test.describe('Home test', async () => {
 			testAreaName2: `Test area edited special ${getCurrentUnixTime()} ${ACCEPT_SPECIAL_CHAR[getRandomBetween(0, ACCEPT_SPECIAL_CHAR.length - 1)]}`,
 		},
 		{
-			testAreaName: `long     Test area ${getCurrentUnixTime()}                space`,
-			testAreaDesc: `long        ${faker.lorem.sentences()}         space`,
-			testAreaName2: `long    Test area edited ${getCurrentUnixTime()}      space`,
+			testAreaName: `    long     Test area ${getCurrentUnixTime()}                space       `,
+			testAreaDesc: `     long        ${faker.lorem.sentences()}         space     `,
+			testAreaName2: `     long    Test area edited ${getCurrentUnixTime()}      space    `,
 		},
 	];
 
@@ -37,6 +37,10 @@ test.describe('Home test', async () => {
 			let testAreaName: string = dataHome1[i].testAreaName;
 			let testAreaDesc: string = dataHome1[i].testAreaDesc;
 			let testAreaName2: string = dataHome1[i].testAreaName2;
+
+			const expectTestAreaName = testAreaName.replace(/\s+/g, ' ').trim();
+			const expectTestAreaDesc = testAreaDesc.replace(/\s+/g, ' ').trim();
+			const expectTestAreaName2 = testAreaName2.replace(/\s+/g, ' ').trim();
 
 			await test.step('1. Go to Home page', async () => {
 				await homePage.goto('');
@@ -73,13 +77,13 @@ test.describe('Home test', async () => {
 			});
 
 			await test.step('3. Validate new area show on home page', async () => {
-				await homePage.validateAreaShowOnHomePage(testAreaName);
+				await homePage.validateAreaShowOnHomePage(expectTestAreaName);
 			});
 
 			await test.step('4. Go to that area detail page, validate detail page display correct', async () => {
-				await homePage.clickOnArea(testAreaName);
+				await homePage.clickOnArea(expectTestAreaName);
 				await commonComponent.detailPage.validateShowDetailPage();
-				await commonComponent.detailPage.validateDetailTitleIs(testAreaName);
+				await commonComponent.detailPage.validateDetailTitleIs(expectTestAreaName);
 				await commonComponent.detailPage.valdiateHaveAreaBoxItemInside(0, 0, 0);
 			});
 
@@ -89,14 +93,14 @@ test.describe('Home test', async () => {
 				await commonComponent.detailPage.clickEditOption();
 				await addEditPage.inputName(testAreaName2);
 				await addEditPage.clickBtnSave();
-				await commonComponent.detailPage.validateDetailTitleIs(testAreaName2);
+				await commonComponent.detailPage.validateDetailTitleIs(expectTestAreaName2);
 			});
 
 			await test.step('6. Delete selected area, validate successful deleted', async () => {
 				await commonComponent.detailPage.clickOnShowOption();
 				await commonComponent.detailPage.validateShowActionOptions();
 				await commonComponent.detailPage.clickDeleteOption();
-				await homePage.validateAreaNotShowOnHomePage(testAreaName2);
+				await homePage.validateAreaNotShowOnHomePage(expectTestAreaName2);
 			});
 		});
 	}
