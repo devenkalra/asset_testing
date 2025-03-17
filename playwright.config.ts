@@ -29,7 +29,7 @@ export default defineConfig({
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: 'on',
 		headless: true, //for running on github action. run cmd line by addition --headed
-		actionTimeout: 2 * 1000,
+		actionTimeout: 10 * 1000, // for upload take times to wait
 	},
 	expect: {
 		timeout: 5 * 1000,

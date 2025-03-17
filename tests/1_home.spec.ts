@@ -15,9 +15,9 @@ test.describe('Home test', async () => {
 			testAreaName2: `Test area edited ${getCurrentUnixTime()}`,
 		},
 		{
-			testAreaName: `Test area special ${getCurrentUnixTime()} ${ACCEPT_SPECIAL_CHAR[getRandomBetween(0, ACCEPT_SPECIAL_CHAR.length)]}`,
-			testAreaDesc: `${faker.lorem.sentences()} ${ACCEPT_SPECIAL_CHAR[getRandomBetween(0, ACCEPT_SPECIAL_CHAR.length)]}`,
-			testAreaName2: `Test area edited special ${getCurrentUnixTime()} ${ACCEPT_SPECIAL_CHAR[getRandomBetween(0, ACCEPT_SPECIAL_CHAR.length)]}`,
+			testAreaName: `Test area special ${getCurrentUnixTime()} ${ACCEPT_SPECIAL_CHAR[getRandomBetween(0, ACCEPT_SPECIAL_CHAR.length - 1)]}`,
+			testAreaDesc: `${faker.lorem.sentences()} ${ACCEPT_SPECIAL_CHAR[getRandomBetween(0, ACCEPT_SPECIAL_CHAR.length - 1)]}`,
+			testAreaName2: `Test area edited special ${getCurrentUnixTime()} ${ACCEPT_SPECIAL_CHAR[getRandomBetween(0, ACCEPT_SPECIAL_CHAR.length - 1)]}`,
 		},
 		{
 			testAreaName: `long     Test area ${getCurrentUnixTime()}                space`,
@@ -27,7 +27,7 @@ test.describe('Home test', async () => {
 	];
 
 	for (let i = 0; i < dataHome1.length; i++) {
-		test(`User can CRUD Area @TC_HOME_0${i + 1}`, async ({
+		test(`User can CRUD Area @TC_HOME_0${i + 1} @debug`, async ({
 			homePage,
 			commonComponent,
 			addEditPage,
