@@ -159,7 +159,7 @@ test.describe('Home test', async () => {
 	}) => {
 		let status: number;
 		let url: string = '';
-		let testAreaName: string = `Test area ${getCurrentUnixTime()} ${INVALID_SPECIAL_CHAR[getRandomBetween(0, INVALID_SPECIAL_CHAR.length)]}`;
+		let testAreaName: string = `Test area ${getCurrentUnixTime()} ${INVALID_SPECIAL_CHAR[getRandomBetween(0, INVALID_SPECIAL_CHAR.length - 1)]}`;
 		let testAreaDesc: string = faker.lorem.sentences();
 
 		await test.step('1. Go to Home page', async () => {
@@ -199,9 +199,10 @@ test.describe('Home test', async () => {
 		await test.step('3. Validate show error validation dialog', async () => {
 			homePage.page.on('dialog', async (dialog) => {
 				expect(dialog.type()).toBe('alert');
-				expect(dialog.message()).toContain('error');
+				expect(dialog.message()).toContain('Error');
 				await dialog.dismiss();
 			});
+			await homePage.validateHomePageHaveArea();
 		});
 	});
 });
