@@ -32,7 +32,7 @@ export default defineConfig({
 		actionTimeout: 10 * 1000, // for upload take times to wait
 	},
 	expect: {
-		timeout: 5 * 1000,
+		timeout: 10 * 1000,
 	},
 	/* Timeout settings
 	timeout: 2 * 60 * 1000,

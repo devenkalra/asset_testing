@@ -24,6 +24,6 @@ export const getRandomImgFileOf = (imgType: LocationType) => {
 };
 
 export const getFileFromDownloadDir = (fileName: string) => {
-	const imgPath = path.join(DOWNLOAD_PATH, `/${fileName}`);
-	return imgPath;
+	const filePath = path.join(DOWNLOAD_PATH, `/${fileName}`);
+	return filePath;
 };

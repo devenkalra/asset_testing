@@ -11,12 +11,14 @@ export class SettingPage extends BasePage {
 		btnImport: "//div[@class='set-menu-item' and text()=' Import']",
 		btnRecomputeStats: "//div[@class='set-menu-item' and text()=' Recompute Stats']",
 		btnClearAllData: "//div[@class='set-menu-item' and text()=' Clear All Data']",
+		msgClearItemSuccess: "//div[contains(text(), 'items deleted successfully')]",
 	};
 
 	async validateShowSettingPage() {
 		await this.validateElementVisible(this.locators.btnExport);
 		await this.validateElementVisible(this.locators.btnImport);
 		await this.validateElementVisible(this.locators.btnRecomputeStats);
+		await this.waitForRendered();
 	}
 
 	async clickBtnExport() {
@@ -24,12 +26,7 @@ export class SettingPage extends BasePage {
 	}
 
 	async clickBtnClearAllData() {
-		this.page.on('dialog', async (dialog) => {
-			expect(dialog.type()).toBe('alert');
-			await dialog.accept();
-		});
-		await this.clickLocator(this.locators.btnClearAllData);
-		await this.waitForNetworkLoad();
+		await this.clickLocator(this.locators.btnClearAllData, 0, true);
 	}
 
 	async chooseFileToImport(fileDir: string) {
@@ -38,5 +35,9 @@ export class SettingPage extends BasePage {
 		const fileChooser = await fileChooserPromise;
 		await fileChooser.setFiles(fileDir);
 		await this.waitForNetworkLoad();
+	}
+
+	async validateShowMsgClearItemSuccess() {
+		await this.validateElementVisible(this.locators.msgClearItemSuccess);
 	}
 }
