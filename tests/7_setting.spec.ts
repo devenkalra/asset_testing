@@ -32,28 +32,23 @@ test.describe('Setting test', async () => {
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.bottomNav.clickSettingIcon();
 			await settingPage.validateShowSettingPage();
-			// let downloadStatus: number;
-			// await addEditPage.page.route('**/export/**', async (route) => {
-			// 	const response = await addEditPage.page.request.fetch(route.request());
-			// 	const buffer = await response.body();
-			// 	downloadStatus = response.status();
-			// 	fileName = `test-export-${testTime}.zip`;
-			// 	fs.writeFileSync(`${DOWNLOAD_PATH}/${fileName}`, buffer);
-			// 	console.log('Export file saved as: ', `test-export-${testTime}.zip`);
-			// 	await route.abort();
-			// });
-			// await settingPage.clickBtnExport();
-			// await expect(async () => {
-			// 	expect(downloadStatus).toBe(200);
-			// }).toPass({ timeout: 30000 });
+			let downloadStatus: number;
+			await addEditPage.page.route('**/export/**', async (route) => {
+				const response = await addEditPage.page.request.fetch(route.request());
+				const buffer = await response.body();
+				downloadStatus = response.status();
+				fileName = `test-export-${testTime}.zip`;
+				fs.writeFileSync(`${DOWNLOAD_PATH}/${fileName}`, buffer);
+				console.log('Export file saved as: ', `test-export-${testTime}.zip`);
+				await route.abort();
+			});
+			await settingPage.clickBtnExport();
+			await expect(async () => {
+				expect(downloadStatus).toBe(200);
+			}).toPass({ timeout: 30000 });
 		});
 
 		await test.step('3. Clear all data, validate home page blank', async () => {
-			await homePage.goto('');
-			await homePage.validateHomePageHaveArea();
-			await commonComponent.bottomNav.clickSettingIcon();
-			await settingPage.validateShowSettingPage();
-			await settingPage.clickBtnClearAllData();
 			settingPage.page.on('dialog', async (dialog) => {
 				expect(dialog.type()).toBe('confirm');
 				expect(dialog.message()).toBe(
@@ -61,31 +56,33 @@ test.describe('Setting test', async () => {
 				);
 				await dialog.accept();
 			});
+			await settingPage.clickBtnClearAllData();
+
 			await settingPage.validateShowMsgClearItemSuccess();
 			await homePage.goto('');
 			await homePage.validateNoAreaShowOnHomePage();
 		});
 
-		// await test.step('4. Import data, validate import data correctly', async () => {
-		// 	let status: number;
-		// 	let resMsg: string;
-		// 	await commonComponent.bottomNav.clickSettingIcon();
-		// 	await addEditPage.page.route('**/import/**', async (route) => {
-		// 		const response = await route.fetch();
-		// 		status = response.status();
-		// 		const responseBody = await response.json();
-		// 		resMsg = responseBody.detail;
-		// 		console.log(responseBody);
-		// 		await route.continue();
-		// 	});
+		await test.step('4. Import data, validate import data correctly', async () => {
+			let status: number;
+			let resMsg: string;
+			await commonComponent.bottomNav.clickSettingIcon();
+			await addEditPage.page.route('**/import/**', async (route) => {
+				const response = await route.fetch();
+				status = response.status();
+				const responseBody = await response.json();
+				resMsg = responseBody.detail;
+				console.log(responseBody);
+				await route.fulfill({ response });
+			});
 
-		// 	await settingPage.chooseFileToImport(getFileFromDownloadDir('test-export-1742267960.zip'));
-		// 	await expect(async () => {
-		// 		expect(status).toBe(200);
-		// 	}).toPass({ timeout: 50000 }); // long time upload
+			await settingPage.chooseFileToImport(getFileFromDownloadDir('test-export-1742296097.zip'));
+			await expect(async () => {
+				expect(status).toBe(200);
+			}).toPass({ timeout: 50000 }); // long time upload
 
-		// 	await homePage.goto('');
-		// 	await homePage.validateHomePageHaveArea();
-		// });
+			await homePage.goto('');
+			await homePage.validateHomePageHaveArea();
+		});
 	});
 });
