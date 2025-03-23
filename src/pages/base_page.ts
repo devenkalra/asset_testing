@@ -30,6 +30,14 @@ export class BasePage {
 		await this.getLocator(locator, index).click({ force: isForce });
 	}
 
+	async clickElementByJS(locator: string) {
+		await this.page.evaluate((element) => {
+			let el = document.evaluate(element, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null)
+				.singleNodeValue! as HTMLElement;
+			el.click();
+		}, locator);
+	}
+
 	async inputText(locator: string, text: string) {
 		await this.getLocator(locator).fill(text);
 	}
@@ -140,5 +148,14 @@ export class BasePage {
 
 	async reloadCurrentPage() {
 		await this.page.reload();
+	}
+
+	async scrollToBottomOfPage() {
+		await this.page.evaluate(() => {
+			const el = document.querySelector('.lp-header-container+div'); // main container which has scroll
+			if (el) {
+				el.scrollBy(0, el.scrollHeight);
+			}
+		});
 	}
 }

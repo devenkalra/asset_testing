@@ -22,10 +22,12 @@ export class ButtonAdd extends BasePage {
 	}
 
 	async clickBtnAddSingle() {
+		await this.scrollToBottomOfPage();
 		await this.clickLocator(this.locators.listBtnAdd, 2);
 	}
 
 	async clickBtnAddMultiple() {
+		await this.scrollToBottomOfPage();
 		await this.clickLocator(this.locators.listBtnAdd, 1);
 	}
 

@@ -1,4 +1,4 @@
-export const INVALID_SPECIAL_CHAR = ['#', '&', '\\', '“'];
+export const INVALID_SPECIAL_CHAR = ['#', '&', '“'];
 export const ACCEPT_SPECIAL_CHAR = [
 	'!',
 	'@',

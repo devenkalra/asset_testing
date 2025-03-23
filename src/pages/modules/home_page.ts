@@ -9,7 +9,7 @@ export class HomePage extends BasePage {
 	private locators = {
 		listAreaName: '.child-caption-overlay',
 		areaContainerByAreaName: (areaName: string) => {
-			return `//div[@class='child-img-2-container'][div[text()='${areaName}']]`;
+			return `//div[@class='child-img-2-container'][div[normalize-space()='${areaName}']]`;
 		},
 		listFullscreenIcon: '.lucide-fullscreen',
 		fullScreenOverlay: '.full-screen-image-overlay',
