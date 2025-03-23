@@ -149,4 +149,13 @@ export class BasePage {
 	async reloadCurrentPage() {
 		await this.page.reload();
 	}
+
+	async scrollToBottomOfPage() {
+		await this.page.evaluate(() => {
+			const el = document.querySelector('.lp-header-container+div'); // main container which has scroll
+			if (el) {
+				el.scrollBy(0, el.scrollHeight);
+			}
+		});
+	}
 }

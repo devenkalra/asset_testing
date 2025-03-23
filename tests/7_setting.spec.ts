@@ -77,6 +77,7 @@ test.describe('Setting test', async () => {
 					headers: {
 						'authorization': (await route.request().headerValue('authorization')) || '',
 					},
+					timeout: 50000,
 				});
 				status = response.status();
 				const responseBody = await response.json();
@@ -92,6 +93,16 @@ test.describe('Setting test', async () => {
 
 			await homePage.goto('');
 			await homePage.validateHomePageHaveArea();
+		});
+
+		await test.step('[End of all Test]: Clean up all data after testing', async () => {
+			await commonComponent.bottomNav.clickSettingIcon();
+			await settingPage.validateShowSettingPage();
+			await settingPage.clickBtnClearAllData();
+
+			await settingPage.validateShowMsgClearItemSuccess();
+			await homePage.goto('');
+			await homePage.validateNoAreaShowOnHomePage();
 		});
 	});
 });
