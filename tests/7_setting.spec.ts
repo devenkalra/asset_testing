@@ -18,13 +18,13 @@ test.describe('Setting test', async () => {
 			await homePage.goto('');
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.buttonAdd.validateShowAddButtons();
-			// await commonComponent.buttonAdd.clickBtnAddMultiple();
-			// await addEditPage.inputName(testAreaName);
-			// await addEditPage.selectManualUploadMethod();
-			// await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Area')]);
-			// await addEditPage.validateShowMutiplePreviewImg(testAreaName, 1);
-			// await addEditPage.clickBtnSaveAll();
-			// await homePage.validateAreaShowOnHomePage(testAreaName);
+			await commonComponent.buttonAdd.clickBtnAddMultiple();
+			await addEditPage.inputName(testAreaName);
+			await addEditPage.selectManualUploadMethod();
+			await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Area')]);
+			await addEditPage.validateShowMutiplePreviewImg(testAreaName, 1);
+			await addEditPage.clickBtnSaveAll();
+			await homePage.validateAreaShowOnHomePage(testAreaName);
 		});
 		let fileName: string;
 
@@ -66,9 +66,18 @@ test.describe('Setting test', async () => {
 		await test.step('4. Import data, validate import data correctly', async () => {
 			let status: number;
 			let resMsg: string;
+			const fileToImport = getFileFromDownloadDir(fileName);
+
 			await commonComponent.bottomNav.clickSettingIcon();
 			await addEditPage.page.route('**/import/**', async (route) => {
-				const response = await route.fetch();
+				const form = new FormData();
+				form.append('file', await fs.openAsBlob(fileToImport));
+				const response = await addEditPage.page.request.post(route.request().url(), {
+					multipart: form,
+					headers: {
+						'authorization': (await route.request().headerValue('authorization')) || '',
+					},
+				});
 				status = response.status();
 				const responseBody = await response.json();
 				resMsg = responseBody.detail;
@@ -76,7 +85,7 @@ test.describe('Setting test', async () => {
 				await route.fulfill({ response });
 			});
 
-			await settingPage.chooseFileToImport(getFileFromDownloadDir('test-export-1742296097.zip'));
+			await settingPage.chooseFileToImport(fileToImport);
 			await expect(async () => {
 				expect(status).toBe(200);
 			}).toPass({ timeout: 50000 }); // long time upload
