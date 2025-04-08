@@ -13,8 +13,12 @@ export class BasePage {
 	}
 
 	async goto(path: string) {
-		await this.page.goto(`https://${this.domain}${path}`);
-		// FOR DEVEN await this.page.goto(`${this.domain}${path}`);
+		//await this.page.goto(`https://${this.domain}${path}`);
+		//FOR DEVEN
+		await this.page.goto(`${this.domain}${path}`);
+		await this.page.waitForLoadState('networkidle');
+		const link = await this.page.locator('a:text("Open Asset Management")');
+		await link.click();
 		await this.page.waitForLoadState('networkidle');
 	}
 

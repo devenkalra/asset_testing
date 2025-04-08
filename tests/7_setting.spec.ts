@@ -67,12 +67,14 @@ test.describe('Setting test', async () => {
 			let status: number;
 			let resMsg: string;
 			const fileToImport = getFileFromDownloadDir(fileName);
+			//const fileToImport = "/home/deven/code/asset_testing/downloads/import_test.zip";
 
 			await commonComponent.bottomNav.clickSettingIcon();
 			await addEditPage.page.route('**/import/**', async (route) => {
 				const form = new FormData();
-				form.append('file', await fs.openAsBlob(fileToImport));
-				const response = await addEditPage.page.request.post(route.request().url(), {
+				let foo = await fs.promises.readFile(fileToImport);
+				form.append('file', await fs.promises.readFile(fileToImport));
+				const response = await addEditPage.page.request.post(route.request().url() + "mode=test7", {
 					multipart: form,
 					headers: {
 						'authorization': (await route.request().headerValue('authorization')) || '',
