@@ -27,7 +27,7 @@ test.describe('Home test', async () => {
 	];
 
 	for (let i = 0; i < dataHome1.length; i++) {
-		test(`User can CRUD Area @TC_HOME_0${i + 1} @debug`, async ({
+		test(`User can CRUD Area @TC_HOME_0${i + 1}`, async ({
 			homePage,
 			commonComponent,
 			addEditPage,
@@ -105,16 +105,21 @@ test.describe('Home test', async () => {
 		});
 	}
 
-	test('User can add multiple Areas @TC_HOME_04', async ({
+	test('User can add multiple Areas @TC_HOME_04 @debug', async ({
 		homePage,
 		commonComponent,
 		addEditPage,
+		landingPage,
 	}) => {
 		let testAreaName: string = `Test mutiple area ${getCurrentUnixTime()}`;
 
 		await test.step('1. Go to Home page', async () => {
-			await homePage.goto('');
+			await landingPage.goto('');
+			await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+			// await homePage.page.waitForLoadState('networkidle');
 			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.validateHomePageLoaded();
 		});
 
 		await test.step('2. Successful create multiple Areas', async () => {
