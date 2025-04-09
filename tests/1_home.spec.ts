@@ -27,10 +27,11 @@ test.describe('Home test', async () => {
 	];
 
 	for (let i = 0; i < dataHome1.length; i++) {
-		test(`User can CRUD Area @TC_HOME_0${i + 1}`, async ({
+		test(`User can CRUD Area @TC_HOME_0${i + 1} @debug`, async ({
 			homePage,
 			commonComponent,
 			addEditPage,
+			landingPage,
 		}) => {
 			let status: number;
 			let url: string = '';
@@ -43,8 +44,11 @@ test.describe('Home test', async () => {
 			const expectTestAreaName2 = testAreaName2.replace(/\s+/g, ' ').trim();
 
 			await test.step('1. Go to Home page', async () => {
-				await homePage.goto('');
+				await landingPage.goto('');
+				await landingPage.validateShowLandingPage();
+				await landingPage.clickBtnOpenAssetApp();
 				await commonComponent.bottomNav.validateShowBottomNav();
+				await homePage.validateHomePageLoaded();
 			});
 
 			await test.step('2. Successful create an new area', async () => {
@@ -93,10 +97,12 @@ test.describe('Home test', async () => {
 				await commonComponent.detailPage.clickEditOption();
 				await addEditPage.inputName(testAreaName2);
 				await addEditPage.clickBtnSave();
-				await commonComponent.detailPage.validateDetailTitleIs(expectTestAreaName2);
+				await homePage.validateAreaShowOnHomePage(testAreaName2);
 			});
 
 			await test.step('6. Delete selected area, validate successful deleted', async () => {
+				await homePage.clickOnArea(testAreaName2);
+				await commonComponent.detailPage.validateDetailTitleIs(expectTestAreaName2);
 				await commonComponent.detailPage.clickOnShowOption();
 				await commonComponent.detailPage.validateShowActionOptions();
 				await commonComponent.detailPage.clickDeleteOption();
@@ -105,7 +111,7 @@ test.describe('Home test', async () => {
 		});
 	}
 
-	test('User can add multiple Areas @TC_HOME_04 @debug', async ({
+	test('User can add multiple Areas @TC_HOME_04', async ({
 		homePage,
 		commonComponent,
 		addEditPage,
@@ -117,7 +123,6 @@ test.describe('Home test', async () => {
 			await landingPage.goto('');
 			await landingPage.validateShowLandingPage();
 			await landingPage.clickBtnOpenAssetApp();
-			// await homePage.page.waitForLoadState('networkidle');
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await homePage.validateHomePageLoaded();
 		});
