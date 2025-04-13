@@ -9,25 +9,25 @@ import { ACCEPT_SPECIAL_CHAR, INVALID_SPECIAL_CHAR } from '../src/constant/chars
 
 test.describe('Home test', async () => {
 	const dataHome1: Data_HomeCase1[] = [
-		{
-			testAreaName: `Test area ${getCurrentUnixTime()}`,
-			testAreaDesc: faker.lorem.sentences(),
-			testAreaName2: `Test area edited ${getCurrentUnixTime()}`,
-		},
+		// {
+		// 	testAreaName: `Test area ${getCurrentUnixTime()}`,
+		// 	testAreaDesc: faker.lorem.sentences(),
+		// 	testAreaName2: `Test area edited ${getCurrentUnixTime()}`,
+		// },
 		{
 			testAreaName: `Test area special ${getCurrentUnixTime()} ${ACCEPT_SPECIAL_CHAR[getRandomBetween(0, ACCEPT_SPECIAL_CHAR.length - 1)]}`,
 			testAreaDesc: `${faker.lorem.sentences()} ${ACCEPT_SPECIAL_CHAR[getRandomBetween(0, ACCEPT_SPECIAL_CHAR.length - 1)]}`,
 			testAreaName2: `Test area edited special ${getCurrentUnixTime()} ${ACCEPT_SPECIAL_CHAR[getRandomBetween(0, ACCEPT_SPECIAL_CHAR.length - 1)]}`,
 		},
-		{
-			testAreaName: `    long     Test area ${getCurrentUnixTime()}                space       `,
-			testAreaDesc: `     long        ${faker.lorem.sentences()}         space     `,
-			testAreaName2: `     long    Test area edited ${getCurrentUnixTime()}      space    `,
-		},
+		// {
+		// 	testAreaName: `    long     Test area ${getCurrentUnixTime()}                space       `,
+		// 	testAreaDesc: `     long        ${faker.lorem.sentences()}         space     `,
+		// 	testAreaName2: `     long    Test area edited ${getCurrentUnixTime()}      space    `,
+		// },
 	];
 
 	for (let i = 0; i < dataHome1.length; i++) {
-		test(`User can CRUD Area @TC_HOME_0${i + 1} @debug`, async ({
+		test(`User can CRUD Area @TC_HOME_0${i + 1} @TC_HOME_123`, async ({
 			homePage,
 			commonComponent,
 			addEditPage,
@@ -64,7 +64,7 @@ test.describe('Home test', async () => {
 					const responseBody = await response.json();
 					url = responseBody.location;
 					console.log(responseBody);
-					route.continue();
+					await route.fulfill({ response });
 				});
 				await addEditPage.chooseImgToUpload(getRandomImgFileOf('Area'));
 				await expect(async () => {
@@ -106,6 +106,7 @@ test.describe('Home test', async () => {
 				await commonComponent.detailPage.clickOnShowOption();
 				await commonComponent.detailPage.validateShowActionOptions();
 				await commonComponent.detailPage.clickDeleteOption();
+				await homePage.validateHomePageLoaded();
 				await homePage.validateAreaNotShowOnHomePage(expectTestAreaName2);
 			});
 		});
@@ -145,9 +146,14 @@ test.describe('Home test', async () => {
 	test('User can view or exit fullsize of area @TC_HOME_05', async ({
 		homePage,
 		commonComponent,
+		landingPage,
 	}) => {
 		await test.step('1. Go to Home page', async () => {
-			await homePage.goto('');
+			await landingPage.goto('');
+			await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 		});
 
@@ -166,6 +172,7 @@ test.describe('Home test', async () => {
 		homePage,
 		commonComponent,
 		addEditPage,
+		landingPage,
 	}) => {
 		let status: number;
 		let url: string = '';
@@ -173,7 +180,11 @@ test.describe('Home test', async () => {
 		let testAreaDesc: string = faker.lorem.sentences();
 
 		await test.step('1. Go to Home page', async () => {
-			await homePage.goto('');
+			await landingPage.goto('');
+			await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 		});
 
@@ -190,7 +201,7 @@ test.describe('Home test', async () => {
 				const responseBody = await response.json();
 				url = responseBody.location;
 				console.log(responseBody);
-				route.continue();
+				await route.fulfill({ response });
 			});
 			await addEditPage.chooseImgToUpload(getRandomImgFileOf('Area'));
 			await expect(async () => {

@@ -3,7 +3,12 @@ import { getRandomImgFileOf } from '../src/utils/file';
 import { getCurrentUnixTime } from '../src/utils/time';
 
 test.describe('Box detail test', async () => {
-	test('Can CRUD box @TC_BOX_01', async ({ homePage, commonComponent, addEditPage }) => {
+	test('Can CRUD box @TC_BOX_01', async ({
+		homePage,
+		commonComponent,
+		addEditPage,
+		landingPage,
+	}) => {
 		const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 		const testBoxName: string = `Test box ${getCurrentUnixTime()}`;
 		const testBoxName2: string = `Test box 2 ${getCurrentUnixTime()}`;
@@ -11,7 +16,11 @@ test.describe('Box detail test', async () => {
 		const testItemName: string = `Test item ${getCurrentUnixTime()}`;
 
 		await test.step('1. Create and go to Detail of test Area', async () => {
-			await homePage.goto('');
+			await landingPage.goto('');
+			await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.buttonAdd.validateShowAddButtons();
 			await commonComponent.buttonAdd.clickBtnAddMultiple();

@@ -7,13 +7,18 @@ test.describe('Navigation test', async () => {
 		homePage,
 		commonComponent,
 		addEditPage,
+		landingPage,
 	}) => {
 		const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 		const testAreaName2: string = `Test area 2 ${getCurrentUnixTime()}`;
 		const testBoxName: string = `Test box ${getCurrentUnixTime()}`;
 
 		await test.step('1. Create 2 test Areas', async () => {
-			await homePage.goto('');
+			await landingPage.goto('');
+			await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.buttonAdd.validateShowAddButtons();
 			await commonComponent.buttonAdd.clickBtnAddMultiple();
