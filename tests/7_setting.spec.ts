@@ -10,12 +10,17 @@ test.describe('Setting test', async () => {
 		commonComponent,
 		addEditPage,
 		settingPage,
+		landingPage,
 	}) => {
 		const testTime = getCurrentUnixTime();
 		const testAreaName: string = `Test area ${testTime}`;
 
 		await test.step('1. Create test Area', async () => {
-			await homePage.goto('');
+			await landingPage.goto('');
+			await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.buttonAdd.validateShowAddButtons();
 			await commonComponent.buttonAdd.clickBtnAddMultiple();
@@ -59,7 +64,11 @@ test.describe('Setting test', async () => {
 			await settingPage.clickBtnClearAllData();
 
 			await settingPage.validateShowMsgClearItemSuccess();
-			await homePage.goto('');
+			await landingPage.goto('');
+			await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.validateHomePageLoaded();
 			await homePage.validateNoAreaShowOnHomePage();
 		});
 
@@ -72,9 +81,10 @@ test.describe('Setting test', async () => {
 			await commonComponent.bottomNav.clickSettingIcon();
 			await addEditPage.page.route('**/import/**', async (route) => {
 				const form = new FormData();
-				let foo = await fs.promises.readFile(fileToImport);
-				form.append('file', await fs.promises.readFile(fileToImport));
-				const response = await addEditPage.page.request.post(route.request().url() + "mode=test7", {
+				form.append('file', await fs.openAsBlob(fileToImport));
+				// let foo = await fs.promises.readFile(fileToImport);
+				// form.append('file', await fs.promises.readFile(fileToImport));
+				const response = await addEditPage.page.request.post(route.request().url(), {
 					multipart: form,
 					headers: {
 						'authorization': (await route.request().headerValue('authorization')) || '',
@@ -93,7 +103,11 @@ test.describe('Setting test', async () => {
 				expect(status).toBe(200);
 			}).toPass({ timeout: 50000 }); // long time upload
 
-			await homePage.goto('');
+			await landingPage.goto('');
+			await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.validateHomePageLoaded();
 			await homePage.validateHomePageHaveArea();
 		});
 
@@ -103,7 +117,11 @@ test.describe('Setting test', async () => {
 			await settingPage.clickBtnClearAllData();
 
 			await settingPage.validateShowMsgClearItemSuccess();
-			await homePage.goto('');
+			await landingPage.goto('');
+			await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.validateHomePageLoaded();
 			await homePage.validateNoAreaShowOnHomePage();
 		});
 	});

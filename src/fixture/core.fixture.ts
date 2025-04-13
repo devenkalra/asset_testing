@@ -5,12 +5,14 @@ import { CommonComponent } from '../pages/modules/common';
 import { AddEditPage } from '../pages/modules/add_edit_page';
 import { SearchPage } from '../pages/modules/search_page';
 import { SettingPage } from '../pages/modules/setting_page';
+import { LandingPage } from '../pages/modules/landing_page';
 
 type TestFixtures = {
 	homePage: HomePage;
 	addEditPage: AddEditPage;
 	searchPage: SearchPage;
 	settingPage: SettingPage;
+	landingPage: LandingPage;
 	commonComponent: CommonComponent;
 };
 
@@ -35,6 +37,10 @@ export const test = baseTest.extend<TestFixtures>({
 	settingPage: async ({ page }, use) => {
 		const settingPage = new SettingPage(page, APP_URL);
 		await use(settingPage);
+	},
+	landingPage: async ({ page }, use) => {
+		const landingPage = new LandingPage(page, APP_URL);
+		await use(landingPage);
 	},
 	commonComponent: async ({ page }, use) => {
 		const commonComponent = new CommonComponent(page, APP_URL);

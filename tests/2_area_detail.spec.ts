@@ -10,6 +10,7 @@ test.describe('Area detail test', async () => {
 		homePage,
 		commonComponent,
 		addEditPage,
+		landingPage,
 	}) => {
 		const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 		const testAreaName2: string = `Test area 2 ${getCurrentUnixTime() + getRandomBetween(1, 10)}`;
@@ -20,7 +21,11 @@ test.describe('Area detail test', async () => {
 		let url: string = '';
 
 		await test.step('1. Create and go to Detail of test Area', async () => {
-			await homePage.goto('');
+			await landingPage.goto('');
+			await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.buttonAdd.validateShowAddButtons();
 			await commonComponent.buttonAdd.clickBtnAddMultiple();
@@ -47,7 +52,7 @@ test.describe('Area detail test', async () => {
 				const responseBody = await response.json();
 				url = responseBody.location;
 				console.log(responseBody);
-				route.continue();
+				await route.fulfill({ response });
 				await expect(async () => {
 					expect(status).toBe(200);
 					expect(url).not.toBe('');
@@ -60,6 +65,13 @@ test.describe('Area detail test', async () => {
 			await addEditPage.inputName(testAreaName2);
 			await addEditPage.inputDescription(desc);
 			await addEditPage.clickBtnSave();
+
+			// routing issue. Created area inside should be stay inside area instead of back to home?
+			await homePage.validateAreaShowOnHomePage(testAreaName);
+			await homePage.clickOnArea(testAreaName);
+			await commonComponent.detailPage.validateDetailTitleIs(testAreaName);
+			await commonComponent.detailPage.clickOnLocationByName(testAreaName2);
+
 			await commonComponent.detailPage.validateAreaDiplaybyName(testAreaName2);
 		});
 
@@ -77,7 +89,7 @@ test.describe('Area detail test', async () => {
 				const responseBody = await response.json();
 				url = responseBody.location;
 				console.log(responseBody);
-				route.continue();
+				await route.fulfill({ response });
 				await expect(async () => {
 					expect(status).toBe(200);
 					expect(url).not.toBe('');
@@ -107,7 +119,7 @@ test.describe('Area detail test', async () => {
 				const responseBody = await response.json();
 				url = responseBody.location;
 				console.log(responseBody);
-				route.continue();
+				await route.fulfill({ response });
 				await expect(async () => {
 					expect(status).toBe(200);
 					expect(url).not.toBe('');
@@ -128,6 +140,7 @@ test.describe('Area detail test', async () => {
 		homePage,
 		commonComponent,
 		addEditPage,
+		landingPage,
 	}) => {
 		const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 		const testMultiAreaName: string = `Test multi area ${getCurrentUnixTime()}`;
@@ -135,7 +148,11 @@ test.describe('Area detail test', async () => {
 		const testMultiItemName: string = `Test multi item ${getCurrentUnixTime()}`;
 
 		await test.step('1. Create and go to Detail of test Area', async () => {
-			await homePage.goto('');
+			await landingPage.goto('');
+			await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.buttonAdd.validateShowAddButtons();
 			await commonComponent.buttonAdd.clickBtnAddMultiple();

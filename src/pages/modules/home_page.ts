@@ -13,7 +13,12 @@ export class HomePage extends BasePage {
 		},
 		listFullscreenIcon: '.lucide-fullscreen',
 		fullScreenOverlay: '.full-screen-image-overlay',
+		txtLoading: "//div[text()='Loading']",
 	};
+
+	async validateHomePageLoaded() {
+		await this.validateElementNotVisible(this.locators.txtLoading);
+	}
 
 	async validateAreaShowOnHomePage(areaName: string) {
 		await this.validateElementNotToHaveCount(this.locators.listAreaName, 0);
