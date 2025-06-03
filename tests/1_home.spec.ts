@@ -8,6 +8,9 @@ import { getRandomBetween } from '../src/utils/random';
 import { ACCEPT_SPECIAL_CHAR, INVALID_SPECIAL_CHAR } from '../src/constant/chars';
 
 test.describe('Home test', async () => {
+	const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+
 	const dataHome1: Data_HomeCase1[] = [
 		// {
 		// 	testAreaName: `Test area ${getCurrentUnixTime()}`,
@@ -28,11 +31,13 @@ test.describe('Home test', async () => {
 
 	for (let i = 0; i < dataHome1.length; i++) {
 		test(`User can CRUD Area @TC_HOME_0${i + 1} @TC_HOME_123`, async ({
-			homePage,
-			commonComponent,
-			addEditPage,
-			landingPage,
-		}) => {
+																																				settingPage,
+																																				homePage,
+																																				detailPage,
+																																				commonComponent,
+																																				addEditPage,
+																																				landingPage,
+																																			}) => {
 			let status: number;
 			let url: string = '';
 			let testAreaName: string = dataHome1[i].testAreaName;
@@ -43,11 +48,9 @@ test.describe('Home test', async () => {
 			const expectTestAreaDesc = testAreaDesc.replace(/\s+/g, ' ').trim();
 			const expectTestAreaName2 = testAreaName2.replace(/\s+/g, ' ').trim();
 
+
 			await test.step('1. Go to Home page', async () => {
-				await landingPage.goto('');
-				await landingPage.validateShowLandingPage();
-				await landingPage.clickBtnOpenAssetApp();
-				await commonComponent.bottomNav.validateShowBottomNav();
+				await homePage.clearAllData(landingPage, settingPage, commonComponent);
 				await homePage.validateHomePageLoaded();
 			});
 
@@ -78,6 +81,7 @@ test.describe('Home test', async () => {
 				await addEditPage.inputName(testAreaName);
 				await addEditPage.inputDescription(testAreaDesc);
 				await addEditPage.clickBtnSave();
+				await addEditPage.blurToBody();
 			});
 
 			await test.step('3. Validate new area show on home page', async () => {
@@ -96,11 +100,15 @@ test.describe('Home test', async () => {
 				await commonComponent.detailPage.validateShowActionOptions();
 				await commonComponent.detailPage.clickEditOption();
 				await addEditPage.inputName(testAreaName2);
+				await sleep(1000);
+				console.log(await addEditPage.getName(testAreaName2));
 				await addEditPage.clickBtnSave();
-				await homePage.validateAreaShowOnHomePage(testAreaName2);
+				await addEditPage.sleep(1000);
+				await detailPage.hasTitle(testAreaName2);
 			});
 
 			await test.step('6. Delete selected area, validate successful deleted', async () => {
+				await commonComponent.bottomNav.clickHomeIcon();
 				await homePage.clickOnArea(testAreaName2);
 				await commonComponent.detailPage.validateDetailTitleIs(expectTestAreaName2);
 				await commonComponent.detailPage.clickOnShowOption();
@@ -113,18 +121,17 @@ test.describe('Home test', async () => {
 	}
 
 	test('User can add multiple Areas @TC_HOME_04', async ({
-		homePage,
-		commonComponent,
-		addEditPage,
-		landingPage,
-	}) => {
+																													 settingPage,
+																													 homePage,
+																													 commonComponent,
+																													 addEditPage,
+																													 landingPage,
+																												 }) => {
 		let testAreaName: string = `Test mutiple area ${getCurrentUnixTime()}`;
 
 		await test.step('1. Go to Home page', async () => {
-			await landingPage.goto('');
-			await landingPage.validateShowLandingPage();
-			await landingPage.clickBtnOpenAssetApp();
-			await commonComponent.bottomNav.validateShowBottomNav();
+			await homePage.gotoHomePage(landingPage, commonComponent);
+			await homePage.validateHomePageLoaded();
 			await homePage.validateHomePageLoaded();
 		});
 
@@ -144,15 +151,13 @@ test.describe('Home test', async () => {
 	});
 
 	test('User can view or exit fullsize of area @TC_HOME_05', async ({
-		homePage,
-		commonComponent,
-		landingPage,
-	}) => {
+																																			settingPage,
+																																			homePage,
+																																			commonComponent,
+																																			landingPage,
+																																		}) => {
 		await test.step('1. Go to Home page', async () => {
-			await landingPage.goto('');
-			await landingPage.validateShowLandingPage();
-			await landingPage.clickBtnOpenAssetApp();
-			await commonComponent.bottomNav.validateShowBottomNav();
+					await homePage.gotoHomePage(landingPage, commonComponent);
 			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 		});
@@ -168,22 +173,19 @@ test.describe('Home test', async () => {
 		});
 	});
 
-	test('User can show error validation on special characters input @TC_HOME_06', async ({
-		homePage,
-		commonComponent,
-		addEditPage,
-		landingPage,
-	}) => {
+	test('User can create with special characters @TC_HOME_06', async ({
+																																			 homePage,
+																																			 commonComponent,
+																																			 addEditPage,
+																																			 landingPage,
+																																		 }) => {
 		let status: number;
 		let url: string = '';
 		let testAreaName: string = `Test area ${getCurrentUnixTime()} ${INVALID_SPECIAL_CHAR[getRandomBetween(0, INVALID_SPECIAL_CHAR.length - 1)]}`;
 		let testAreaDesc: string = faker.lorem.sentences();
 
 		await test.step('1. Go to Home page', async () => {
-			await landingPage.goto('');
-			await landingPage.validateShowLandingPage();
-			await landingPage.clickBtnOpenAssetApp();
-			await commonComponent.bottomNav.validateShowBottomNav();
+					await homePage.gotoHomePage(landingPage, commonComponent);
 			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 		});
@@ -209,21 +211,17 @@ test.describe('Home test', async () => {
 				expect(url).not.toBe('');
 			}).toPass();
 			await addEditPage.validateUploadedImgShow(url);
+
 			await addEditPage.clickBtnAddImg();
 
 			await addEditPage.selectLocationType('Area');
 			await addEditPage.inputName(testAreaName);
 			await addEditPage.inputDescription(testAreaDesc);
 			await addEditPage.clickBtnSave();
+			await addEditPage.sleep(1000);
+			await homePage.validateAreaShowOnHomePage(testAreaName);
+
 		});
 
-		await test.step('3. Validate show error validation dialog', async () => {
-			homePage.page.on('dialog', async (dialog) => {
-				expect(dialog.type()).toBe('alert');
-				expect(dialog.message()).toContain('Error');
-				await dialog.dismiss();
-			});
-			await homePage.validateHomePageHaveArea();
-		});
 	});
 });

@@ -3,8 +3,8 @@ import { BasePage } from '../base_page';
 import { LocationType } from '../../types/app';
 
 export class AddEditPage extends BasePage {
-	constructor(page: Page, domain: string) {
-		super(page, domain);
+	constructor(page: Page, domain: string, context: any = null) {
+		super(page, domain, context);
 	}
 	private locators = {
 		btnExit: "//button[text()='X']",
@@ -32,15 +32,26 @@ export class AddEditPage extends BasePage {
 
 	async selectLocationType(locationType: LocationType) {
 		await this.selectElementOption(this.locators.dropdownSelectType, locationType);
+		await this.blurToBody()
+		await this.waitForNetworkLoad()
+		await this.sleep(1000);
 	}
 
 	async inputName(name: string) {
 		await this.inputText(this.locators.txbName, name);
+		await this.blurToBody()
+		await this.sleep(1000);
 	}
+	async getName(name: string) {
+		return(await this.getValue(this.locators.txbName))
+	}
+
 
 	async inputDescription(description: string) {
 		await this.clickLocator(this.locators.txbDescription);
 		await this.inputText(this.locators.txbDescription, description);
+		await this.blurToBody();
+		await this.sleep(1000)
 	}
 
 	async clickIconAddPhoto() {

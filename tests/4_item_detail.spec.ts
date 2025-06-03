@@ -5,9 +5,11 @@ import { getCurrentUnixTime } from '../src/utils/time';
 test.describe('Item detail test', async () => {
 	test('Can update item detail @TC_ITEM_01', async ({
 		homePage,
+		detailPage,
 		commonComponent,
 		addEditPage,
 		landingPage,
+		settingPage
 	}) => {
 		const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 		const testBoxName: string = `Test box ${getCurrentUnixTime()}`;
@@ -17,10 +19,9 @@ test.describe('Item detail test', async () => {
 		const testItemName4: string = `Test item 4 ${getCurrentUnixTime()}`;
 
 		await test.step('1. Create and go to Detail of test Area', async () => {
-			await landingPage.goto('');
-			await landingPage.validateShowLandingPage();
-			await landingPage.clickBtnOpenAssetApp();
-			await commonComponent.bottomNav.validateShowBottomNav();
+					await homePage.clearAllData(landingPage, settingPage, commonComponent);
+
+
 			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.buttonAdd.validateShowAddButtons();
@@ -54,8 +55,9 @@ test.describe('Item detail test', async () => {
 			await commonComponent.detailPage.validateShowActionOptions();
 			await commonComponent.detailPage.clickEditOption();
 			await addEditPage.inputName(testItemName2);
+			await addEditPage.blurToBody()
 			await addEditPage.clickBtnSave();
-			await commonComponent.detailPage.validateDetailTitleIs(testItemName2);
+			await detailPage.hasTitle(testItemName2);
 			await commonComponent.detailPage.clickOnShowOption();
 			await commonComponent.detailPage.validateShowActionOptions();
 			await commonComponent.detailPage.clickDeleteOption();
@@ -95,6 +97,7 @@ test.describe('Item detail test', async () => {
 			await commonComponent.detailPage.validateShowActionOptions();
 			await commonComponent.detailPage.clickEditOption();
 			await addEditPage.inputName(testItemName4);
+			await addEditPage.blurToBody()
 			await addEditPage.clickBtnSave();
 			await commonComponent.detailPage.validateDetailTitleIs(testItemName4);
 			await commonComponent.detailPage.clickOnShowOption();

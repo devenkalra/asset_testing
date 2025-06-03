@@ -9,14 +9,14 @@ test.describe('Search test', async () => {
 		addEditPage,
 		searchPage,
 		landingPage,
+		settingPage
 	}) => {
 		const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 
 		await test.step('1. Create test Area', async () => {
-			await landingPage.goto('');
-			await landingPage.validateShowLandingPage();
-			await landingPage.clickBtnOpenAssetApp();
-			await commonComponent.bottomNav.validateShowBottomNav();
+				await homePage.clearAllData(landingPage, settingPage, commonComponent);
+
+
 			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.buttonAdd.validateShowAddButtons();

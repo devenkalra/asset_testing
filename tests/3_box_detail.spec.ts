@@ -4,6 +4,7 @@ import { getCurrentUnixTime } from '../src/utils/time';
 
 test.describe('Box detail test', async () => {
 	test('Can CRUD box @TC_BOX_01', async ({
+		settingPage,
 		homePage,
 		commonComponent,
 		addEditPage,
@@ -16,10 +17,8 @@ test.describe('Box detail test', async () => {
 		const testItemName: string = `Test item ${getCurrentUnixTime()}`;
 
 		await test.step('1. Create and go to Detail of test Area', async () => {
-			await landingPage.goto('');
-			await landingPage.validateShowLandingPage();
-			await landingPage.clickBtnOpenAssetApp();
-			await commonComponent.bottomNav.validateShowBottomNav();
+					await homePage.clearAllData(landingPage, settingPage, commonComponent);
+
 			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.buttonAdd.validateShowAddButtons();
@@ -28,6 +27,7 @@ test.describe('Box detail test', async () => {
 			await addEditPage.selectManualUploadMethod();
 			await addEditPage.chooseMutipleImgToUpload([getRandomImgFileOf('Area')]);
 			await addEditPage.validateShowMutiplePreviewImg(testAreaName, 1);
+			await addEditPage.blurToBody();
 			await addEditPage.clickBtnSaveAll();
 			await homePage.validateAreaShowOnHomePage(testAreaName);
 			await homePage.clickOnArea(testAreaName);

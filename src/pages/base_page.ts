@@ -2,18 +2,58 @@ import { Page, expect } from '@playwright/test';
 
 import { ElementInfo } from '../types/app';
 import { getRandomIndex } from '../utils/random';
+import { test } from '../fixture/core.fixture';
 
 export class BasePage {
 	page: Page;
 	readonly domain: string;
+	context: any;
 
-	constructor(page: Page, domain: string) {
+	constructor(page: Page, domain: string, context: any) {
 		this.page = page;
 		this.domain = domain;
+		this.context = context;
 	}
 
+	async clearAllData(landingPage, settingPage, commonComponent) {
+		await landingPage.goto('');
+		await landingPage.validateShowLandingPage();
+		await landingPage.clickBtnOpenAssetApp();
+		await commonComponent.bottomNav.validateShowBottomNav();
+		await commonComponent.bottomNav.clickSettingIcon();
+		await settingPage.clearAllData();
+		commonComponent.bottomNav.clickHomeIcon();
+	};
+
+
+	async gotoHomePage(landingPage, commonComponent) {
+		await landingPage.goto('');
+		await landingPage.validateShowLandingPage();
+		await landingPage.clickBtnOpenAssetApp();
+		await commonComponent.bottomNav.validateShowBottomNav();
+	};
+
+
+	async blurToBody() {
+		this.page.locator('body').click({ force: true });
+	}
+
+
 	async goto(path: string) {
-		await this.page.goto(`https://${this.domain}${path}`);
+		let page = this.page;
+		let context = this.context;
+		if (!context) {
+			alert('Context is null, creating new context');
+		}
+		await this.page.goto(`${this.domain}${path}`, { waitUntil: 'load' });
+		await page.evaluate(() => {
+			localStorage.clear();
+			sessionStorage.clear();
+			return caches.keys().then(keys => Promise.all(keys.map(key => caches.delete(key))));
+		});
+		await context.clearCookies();
+
+
 		//FOR DEVEN
 		// await this.page.goto(`${this.domain}${path}`);
 		// await this.page.waitForLoadState('networkidle');
@@ -30,8 +70,15 @@ export class BasePage {
 		return this.page.locator(selector);
 	}
 
+	async sleep(ms) {
+		new Promise(resolve => setTimeout(resolve, ms));
+	}
+
 	async clickLocator(locator: string, index = 0, isForce = false) {
-		await this.getLocator(locator, index).click({ force: isForce });
+		let element = await this.getLocator(locator, index);
+		const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+		await sleep(1000);
+		await element.click({ force: isForce });
 	}
 
 	async clickElementByJS(locator: string) {
@@ -43,7 +90,17 @@ export class BasePage {
 	}
 
 	async inputText(locator: string, text: string) {
-		await this.getLocator(locator).fill(text);
+		const input = this.getLocator(locator);
+
+// Focus the input
+		await input.click();
+
+// Select all text
+		await input.press('Control+A');  // Or 'Meta+A' on Mac
+
+		for (const char of text) {
+			await input.press(char === ' ' ? ' ' : char);
+		}
 	}
 
 	async getText(locator: string): Promise<string> {

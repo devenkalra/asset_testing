@@ -2,9 +2,10 @@ import { Page } from '@playwright/test';
 import { BasePage } from '../../../base_page';
 
 export class BottomNav extends BasePage {
-	constructor(page: Page, domain: string) {
-		super(page, domain);
+	constructor(page: Page, domain: string, context: any = null) {
+		super(page, domain, context);
 	}
+
 
 	private locators = {
 		menuContainer: '.bottom-menu',

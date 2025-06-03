@@ -6,9 +6,11 @@ import { AddEditPage } from '../pages/modules/add_edit_page';
 import { SearchPage } from '../pages/modules/search_page';
 import { SettingPage } from '../pages/modules/setting_page';
 import { LandingPage } from '../pages/modules/landing_page';
+import {DetailPage} from '../pages/modules/detail_page';
 
 type TestFixtures = {
 	homePage: HomePage;
+	detailPage: DetailPage;
 	addEditPage: AddEditPage;
 	searchPage: SearchPage;
 	settingPage: SettingPage;
@@ -22,28 +24,35 @@ type TestFixtures = {
 const APP_URL = getEnvTestVersion(7);
 
 export const test = baseTest.extend<TestFixtures>({
-	homePage: async ({ page }, use) => {
-		const homePage = new HomePage(page, APP_URL);
+	detailPage: async ({ page, context }, use) => {
+		const detailPage = new DetailPage(page, APP_URL, context);
+		await use(detailPage);
+	},
+	homePage: async ({ page, context }, use) => {
+		const homePage = new HomePage(page, APP_URL, context);
 		await use(homePage);
 	},
-	addEditPage: async ({ page }, use) => {
-		const addEditPage = new AddEditPage(page, APP_URL);
+	addEditPage: async ({ page, context }, use) => {
+		const addEditPage = new AddEditPage(page, APP_URL, context);
 		await use(addEditPage);
 	},
-	searchPage: async ({ page }, use) => {
-		const searchPage = new SearchPage(page, APP_URL);
+	searchPage: async ({ page, context }, use) => {
+		const searchPage = new SearchPage(page, APP_URL, context);
 		await use(searchPage);
 	},
-	settingPage: async ({ page }, use) => {
-		const settingPage = new SettingPage(page, APP_URL);
+	settingPage: async ({ page, context }, use) => {
+		const settingPage = new SettingPage(page, APP_URL, context);
 		await use(settingPage);
 	},
-	landingPage: async ({ page }, use) => {
-		const landingPage = new LandingPage(page, APP_URL);
+	landingPage: async ({ page, context }, use) => {
+		const landingPage = new LandingPage(page, APP_URL, context);
 		await use(landingPage);
+		console.log('Viewport Size:', await page.viewportSize());
+    //console.log('Extra HTTP Headers:', await page.context());
+
 	},
-	commonComponent: async ({ page }, use) => {
-		const commonComponent = new CommonComponent(page, APP_URL);
+	commonComponent: async ({ page, context }, use) => {
+		const commonComponent = new CommonComponent(page, APP_URL, context);
 		await use(commonComponent);
 	},
 });

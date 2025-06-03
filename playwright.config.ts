@@ -9,16 +9,17 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export default  ({
 	testDir: './tests',
 	/* Run tests in files in parallel */
-	fullyParallel: true,
+	fullyParallel: false,
 	/* Fail the build on CI if you accidentally left test.only in the source code. */
 	forbidOnly: !!process.env.CI,
 	/* Retry on CI only */
 	retries: 0,
 	/* Opt out of parallel tests on CI. */
 	workers: 1,
+
 	/* Reporter to use. See https://playwright.dev/docs/test-reporters */
 	reporter: [['html'], ['list']],
 	/* Shared settings for all the projects below. cd
@@ -26,10 +27,17 @@ export default defineConfig({
 	use: {
 		/* Base URL to use in actions like `await page.goto('/')`. */
 		// baseURL: 'http://127.0.0.1:3000',
-
+    extraHTTPHeaders: {
+      'Cache-Control': 'no-cache',
+      'Pragma': 'no-cache',
+    },
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+		bypassCSP: true,
+		storageState: undefined,
+		viewport: { width: 2000, height: 1000},
 		trace: 'on',
 		headless: false, //for running on github action. run cmd line by addition --headed
+		permissions: ['camera', 'microphone'],
 		actionTimeout: 10 * 1000, // for upload take times to wait
 	},
 	expect: {
@@ -43,6 +51,7 @@ export default defineConfig({
 	globalTimeout: 600 * 1000,
 	/* Configure projects for major browsers */
 	projects: [
+		/*
 		{
 			name: 'iphone-chromium',
 			use: {
@@ -52,6 +61,8 @@ export default defineConfig({
 				permissions: ['camera'],
 			},
 		},
+
+		 */
 
 		// {
 		//   name: 'firefox',
@@ -78,10 +89,10 @@ export default defineConfig({
 		//   name: 'Microsoft Edge',
 		//   use: { ...devices['Desktop Edge'], channel: 'msedge' },
 		// },
-		// {
-		//   name: 'Google Chrome',
-		//   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-		// },
+		 {
+		   name: 'Google Chrome',
+		   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+		 },
 	],
 
 	/* Run your local dev server before starting the tests */

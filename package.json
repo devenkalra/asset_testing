@@ -4,8 +4,10 @@
 	"main": "index.js",
 	"license": "MIT",
 	"devDependencies": {
-		"@playwright/test": "^1.50.1",
-		"@types/node": "^22.13.4"
+		"@playwright/test": "^1.52.0",
+		"@types/node": "^22.13.4",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.8.3"
 	},
 	"dependencies": {
 		"@faker-js/faker": "^9.5.0",
@@ -15,10 +17,12 @@
 		"eslint-plugin-import": "^2.29.1",
 		"eslint-plugin-playwright": "^1.5.2",
 		"eslint-plugin-prettier": "^5.1.3",
-		"prettier": "^3.2.5"
+		"playwright": "^1.52.0",
+		"prettier": "^3.2.5",
+		"undici": "^6.21.3"
 	},
 	"scripts": {
-		"test": "npx playwright test --headed",
+		"test": "playwright test --headed /data/code/asset_testing/tests/2_area_detail.spec.ts",
 		"test-github": "npx playwright test"
 	}
 }

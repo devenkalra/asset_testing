@@ -9,10 +9,10 @@ export class CommonComponent extends BasePage {
 	public buttonAdd: ButtonAdd;
 	public detailPage: DetailPage;
 
-	constructor(page: Page, domain: string) {
-		super(page, domain);
-		this.bottomNav = new BottomNav(page, domain);
-		this.buttonAdd = new ButtonAdd(page, domain);
-		this.detailPage = new DetailPage(page, domain);
+	constructor(page: Page, domain: string, context: any = null) {
+		super(page, domain, context);
+		this.bottomNav = new BottomNav(page, domain, context);
+		this.buttonAdd = new ButtonAdd(page, domain, context);
+		this.detailPage = new DetailPage(page, domain, context);
 	}
 }

@@ -4,16 +4,25 @@ import { getCurrentUnixTime } from '../src/utils/time';
 
 test.describe('Navigation test', async () => {
 	test('Can navigate Left, Right, Outside correct @TC_NAV_01', async ({
-		homePage,
-		commonComponent,
-		addEditPage,
-		landingPage,
-	}) => {
+																																				homePage,
+																																				commonComponent,
+																																				addEditPage,
+				settingPage,
+																																				landingPage,
+																																			}) => {
 		const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 		const testAreaName2: string = `Test area 2 ${getCurrentUnixTime()}`;
 		const testBoxName: string = `Test box ${getCurrentUnixTime()}`;
 
 		await test.step('1. Create 2 test Areas', async () => {
+				await homePage.clearAllData(landingPage, settingPage, commonComponent);
+
+
+
+
+
+
+
 			await landingPage.goto('');
 			await landingPage.validateShowLandingPage();
 			await landingPage.clickBtnOpenAssetApp();
@@ -68,20 +77,34 @@ test.describe('Navigation test', async () => {
 	});
 
 	test('3 bottom navigation icons working correct @TC_NAV_02', async ({
-		homePage,
-		commonComponent,
-		searchPage,
-		settingPage,
-	}) => {
+																																				homePage,
+																																				commonComponent,
+																																				searchPage,
+																																				landingPage,
+																																				settingPage,
+																																			}) => {
 		await test.step('1. Can navigate to Search by bottom navigation', async () => {
-			await homePage.goto('');
+						await homePage.clearAllData(landingPage, settingPage, commonComponent);
+
+
+
+			await commonComponent.bottomNav.clickSettingIcon();
+			await settingPage.validateShowSettingPage();
+			await settingPage.clickBtnClearAllData();
+			//await settingPage.validateShowMsgClearItemSuccess();
+			await commonComponent.bottomNav.clickHomeIcon();
+
+
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.bottomNav.clickSearchIcon();
 			await searchPage.validateShowSearchPage();
 		});
 
 		await test.step('2. Can navigate to Setting page by bottom navigation', async () => {
-			await homePage.goto('');
+			await landingPage.goto('');
+				await landingPage.validateShowLandingPage();
+			await landingPage.clickBtnOpenAssetApp();
+
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.bottomNav.clickSettingIcon();
 			await settingPage.validateShowSettingPage();

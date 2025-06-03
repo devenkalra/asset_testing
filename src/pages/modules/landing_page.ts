@@ -3,9 +3,10 @@ import { Page, expect } from '@playwright/test';
 import { BasePage } from '../base_page';
 
 export class LandingPage extends BasePage {
-	constructor(page: Page, domain: string) {
-		super(page, domain);
+	constructor(page: Page, domain: string, context: any = null) {
+		super(page, domain, context);
 	}
+
 	private locators = {
 		headerAssetManagement: "//h2[text()='Asset Management']",
 		btnOpenAssetApp:
