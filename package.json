@@ -24,7 +24,13 @@
 		"undici": "^6.21.3"
 	},
 	"scripts": {
-		"test": "playwright test --headed /data/code/asset_testing/tests/2_area_detail.spec.ts",
-		"test-github": "npx playwright test"
+		"test-local-debug": "npx cross-env ENV=local npx playwright test --project=google-chrome --headed <specific_path_or_test_tag_here>",
+		"test-public-debug": "npx cross-env ENV=public npx playwright test --project=google-chrome --headed <specific_path_or_test_tag_here>",
+		"test-local-debug-example1": "npx cross-env ENV=local npx playwright test --project=google-chrome --headed -g @TC_SETTING_01",
+		"test-local-debug-example2": "npx cross-env ENV=local npx playwright test --project=google-chrome --headed tests/assets_app/6_search.spec.ts",
+		"test-assets-local": "npx cross-env ENV=local npx playwright test --headed tests/assets_app --project=iphone-chromium",
+		"test-assets-public": "npx cross-env ENV=public npx playwright test --headed tests/assets_app --project=iphone-chromium",
+		"test-knowledge-local": "npx cross-env ENV=local npx playwright test --headed tests/knowledge_app --project=google-chrome",
+		"test-knowledge-public": "npx cross-env ENV=public npx playwright test --headed tests/knowledge_app --project=iphgoogle-chrome"
 	}
 }

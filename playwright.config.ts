@@ -35,11 +35,11 @@ export default {
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		bypassCSP: true,
 		storageState: undefined,
-		viewport: { width: 2000, height: 1000 },
 		trace: 'on',
 		headless: false, //for running on github action. run cmd line by addition --headed
 		permissions: ['camera', 'microphone'],
 		actionTimeout: 10 * 1000, // for upload take times to wait
+		viewport: { width: 2000, height: 1000 },
 	},
 	expect: {
 		timeout: 10 * 1000,
@@ -52,7 +52,6 @@ export default {
 	globalTimeout: 600 * 1000,
 	/* Configure projects for major browsers */
 	projects: [
-		/*
 		{
 			name: 'iphone-chromium',
 			use: {
@@ -62,8 +61,13 @@ export default {
 				permissions: ['camera'],
 			},
 		},
-
-		 */
+		{
+			name: 'google-chrome',
+			use: {
+				...devices['Desktop Chrome'],
+				viewport: { width: 2000, height: 1000 },
+			},
+		},
 
 		// {
 		//   name: 'firefox',
@@ -90,10 +94,6 @@ export default {
 		//   name: 'Microsoft Edge',
 		//   use: { ...devices['Desktop Edge'], channel: 'msedge' },
 		// },
-		{
-			name: 'Google Chrome',
-			use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-		},
 	],
 
 	/* Run your local dev server before starting the tests */
