@@ -25,7 +25,7 @@
 	},
 	"scripts": {
 		"test-local-debug": "npx cross-env ENV=local npx playwright test --project=google-chrome --headed <specific_path_or_test_tag_here>",
-		"test-public-debug": "npx cross-env ENV=public npx playwright test --project=google-chrome --headed <specific_path_or_test_tag_here>",
+		"test-public-debug": "npx cross-env ENV=public npx playwright test --project=google-chrome --headed",
 		"test-local-debug-example1": "npx cross-env ENV=local npx playwright test --project=google-chrome --headed -g @TC_SETTING_01",
 		"test-local-debug-example2": "npx cross-env ENV=local npx playwright test --project=google-chrome --headed tests/assets_app/6_search.spec.ts",
 		"test-assets-local": "npx cross-env ENV=local npx playwright test --headed tests/assets_app --project=iphone-chromium",

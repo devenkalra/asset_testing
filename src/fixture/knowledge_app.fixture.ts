@@ -2,7 +2,7 @@ import { test as baseTest } from '@playwright/test';
 import { getEnvTestVersion } from '../utils/setup';
 import { HomePage } from '../pages/knowledge_app/modules/home_page';
 
-const APP_URL = getEnvTestVersion('knowledge', 7);
+const APP_URL = getEnvTestVersion('knowledge', 1);
 
 type TestFixtures = {
 	homePage: HomePage;

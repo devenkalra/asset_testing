@@ -7,5 +7,20 @@ export class HomePage extends BasePage {
 		super(page, domain, context);
 	}
 
-	private locators = {};
+	private locators = {
+		btnQueryGenerator: "//button[normalize-space()='Query Generator']",
+		btnExecuteCommand: '#executeTestCommand',
+		dropDownTodoItems: '#testAction option',
+	};
+
+	async validateShowHomePageKnowledgeApp() {
+		await this.validateElementVisible(this.locators.btnExecuteCommand);
+		await this.validateElementVisible(this.locators.btnExecuteCommand);
+	}
+
+	async validateDropDownTodoHasOption(items: String[]) {
+		await this.validateElementNotToHaveCount(this.locators.dropDownTodoItems, 0);
+		const actualItems = await this.getLocators(this.locators.dropDownTodoItems).allInnerTexts();
+		expect(actualItems).toMatchObject(items);
+	}
 }
