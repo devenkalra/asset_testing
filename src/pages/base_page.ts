@@ -2,7 +2,6 @@ import { Page, expect } from '@playwright/test';
 
 import { ElementInfo } from '../types/app';
 import { getRandomIndex } from '../utils/random';
-import { test } from '../fixture/core.fixture';
 
 export class BasePage {
 	page: Page;
@@ -15,29 +14,27 @@ export class BasePage {
 		this.context = context;
 	}
 
+	// Simone: Maybe no need click manually for now, already handle redirect directly to the app
+
 	async clearAllData(landingPage, settingPage, commonComponent) {
 		await landingPage.goto('');
-		await landingPage.validateShowLandingPage();
-		await landingPage.clickBtnOpenAssetApp();
+		// await landingPage.validateShowLandingPage();
+		// await landingPage.clickBtnOpenAssetApp();
 		await commonComponent.bottomNav.validateShowBottomNav();
 		await commonComponent.bottomNav.clickSettingIcon();
 		await settingPage.clearAllData();
-		commonComponent.bottomNav.clickHomeIcon();
-	};
-
+	}
 
 	async gotoHomePage(landingPage, commonComponent) {
 		await landingPage.goto('');
-		await landingPage.validateShowLandingPage();
-		await landingPage.clickBtnOpenAssetApp();
+		// await landingPage.validateShowLandingPage();
+		// await landingPage.clickBtnOpenAssetApp();
 		await commonComponent.bottomNav.validateShowBottomNav();
-	};
-
+	}
 
 	async blurToBody() {
 		this.page.locator('body').click({ force: true });
 	}
-
 
 	async goto(path: string) {
 		let page = this.page;
@@ -49,10 +46,9 @@ export class BasePage {
 		await page.evaluate(() => {
 			localStorage.clear();
 			sessionStorage.clear();
-			return caches.keys().then(keys => Promise.all(keys.map(key => caches.delete(key))));
+			return caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key))));
 		});
 		await context.clearCookies();
-
 
 		//FOR DEVEN
 		// await this.page.goto(`${this.domain}${path}`);
@@ -71,12 +67,12 @@ export class BasePage {
 	}
 
 	async sleep(ms) {
-		new Promise(resolve => setTimeout(resolve, ms));
+		new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
 	async clickLocator(locator: string, index = 0, isForce = false) {
 		let element = await this.getLocator(locator, index);
-		const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+		const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 		await sleep(1000);
 		await element.click({ force: isForce });
 	}
@@ -92,11 +88,11 @@ export class BasePage {
 	async inputText(locator: string, text: string) {
 		const input = this.getLocator(locator);
 
-// Focus the input
+		// Focus the input
 		await input.click();
 
-// Select all text
-		await input.press('Control+A');  // Or 'Meta+A' on Mac
+		// Select all text
+		await input.press('Control+A'); // Or 'Meta+A' on Mac
 
 		for (const char of text) {
 			await input.press(char === ' ' ? ' ' : char);

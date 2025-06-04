@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test';
 
-import { BasePage } from '../base_page';
+import { BasePage } from '../../base_page';
 
 export class DetailPage extends BasePage {
 	constructor(page: Page, domain: string, context: any = null) {
@@ -26,13 +26,12 @@ export class DetailPage extends BasePage {
 		 */
 		listFullscreenIcon: '.lucide-fullscreen',
 		fullScreenOverlay: '.full-screen-image-overlay',
-		txtLoading: '//div[text()=\'Loading\']',
+		txtLoading: "//div[text()='Loading']",
 	};
 
 	async validateElementVisible(locator: string, index = 0) {
 		await expect(this.getLocator(locator, index)).toBeVisible();
 	}
-
 
 	async hasTitle(title: string) {
 		let headerLocator = `#ViewHeader >> div.view-heading >> span:has-text("${title}")`;
@@ -40,13 +39,23 @@ export class DetailPage extends BasePage {
 	}
 
 	async areaShownByName(areaName: string) {
-		await this.page.locator(`#ViewChildrenGridAreaSub >> div.child-img-3-container >> div:has-text("${areaName}")`).waitFor({ state: 'visible' });
+		await this.page
+			.locator(
+				`#ViewChildrenGridAreaSub >> div.child-img-3-container >> div:has-text("${areaName}")`,
+			)
+			.waitFor({ state: 'visible' });
 	}
 
-
 	async childShownByName(childName: string, type: string) {
-		let parentDivName = type == 'area' ? 'ViewChildrenGridAreaSub' : type == 'box' ? 'ViewChildrenGridBoxesSub' : 'ViewChildrenGridItemsSub';
-		await this.page.locator(`#${parentDivName} >> div.child-img-3-container >> div:has-text("${childName}")`).waitFor({ state: 'visible' });
+		let parentDivName =
+			type == 'area'
+				? 'ViewChildrenGridAreaSub'
+				: type == 'box'
+					? 'ViewChildrenGridBoxesSub'
+					: 'ViewChildrenGridItemsSub';
+		await this.page
+			.locator(`#${parentDivName} >> div.child-img-3-container >> div:has-text("${childName}")`)
+			.waitFor({ state: 'visible' });
 	}
 
 	async validateTitle(title: string, type: string) {
@@ -56,13 +65,26 @@ export class DetailPage extends BasePage {
 
 	childImageByName(childName: string, type: string) {
 		if (type == 'area')
-			return this.page.locator(`#ViewChildrenGridAreaSub >> div.child-img-3-container >> div:has-text("${childName}")`).locator('..');
+			return this.page
+				.locator(
+					`#ViewChildrenGridAreaSub >> div.child-img-3-container >> div:has-text("${childName}")`,
+				)
+				.locator('..');
 		else if (type == 'box')
-			return this.page.locator(`#ViewChildrenGridBoxesSub >> div.child-img-3-container >> div:has-text("${childName}")`).locator('..').locator('img');
+			return this.page
+				.locator(
+					`#ViewChildrenGridBoxesSub >> div.child-img-3-container >> div:has-text("${childName}")`,
+				)
+				.locator('..')
+				.locator('img');
 		else if (type == 'item')
-			return this.page.locator(`#ViewChildrenGridItemsSub >> div.child-img-3-container >> div:has-text("${childName}")`).locator('..').locator('img');
+			return this.page
+				.locator(
+					`#ViewChildrenGridItemsSub >> div.child-img-3-container >> div:has-text("${childName}")`,
+				)
+				.locator('..')
+				.locator('img');
 	}
-
 
 	async clickOnChild(childName: string, type: string) {
 		await this.childImageByName(childName, type).click();
@@ -94,9 +116,11 @@ export class DetailPage extends BasePage {
 		await this.validateElementNotVisible(this.locators.areaContainerByAreaNameHomePage(areaName));
 	}
 
-
 	async validateShowMultipleAreaFor(areaName: string, count: number) {
-		await this.validateElementToHaveCount(this.locators.areaContainerByAreaNameHomePage(areaName), count);
+		await this.validateElementToHaveCount(
+			this.locators.areaContainerByAreaNameHomePage(areaName),
+			count,
+		);
 	}
 
 	async clickOnAnyFullScreenIcon() {

@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test';
 
-import { BasePage } from '../base_page';
+import { BasePage } from '../../base_page';
 
 export class SettingPage extends BasePage {
 	constructor(page: Page, domain: string, context: any = null) {
@@ -8,17 +8,16 @@ export class SettingPage extends BasePage {
 	}
 
 	private locators = {
-		btnExport: '//div[@class=\'set-menu-item\' and text()=\' Export\']',
-		btnImport: '//div[@class=\'set-menu-item\' and text()=\' Import\']',
-		btnRecomputeStats: '//div[@class=\'set-menu-item\' and text()=\' Recompute Stats\']',
-		btnClearAllData: '//div[@class=\'set-menu-item\' and contains(., \'Clear All Data\')]',
-		msgClearItemSuccess: '//div[contains(text(), \'items deleted successfully\')]',
+		btnExport: "//div[@class='set-menu-item' and text()=' Export']",
+		btnImport: "//div[@class='set-menu-item' and text()=' Import']",
+		btnRecomputeStats: "//div[@class='set-menu-item' and text()=' Recompute Stats']",
+		btnClearAllData: "//div[@class='set-menu-item' and contains(., 'Clear All Data')]",
+		msgClearItemSuccess: "//div[contains(text(), 'items deleted successfully')]",
 		btnSave: '#exportSave',
 	};
 
 	async waitForExportSave() {
 		await this.page.locator(this.locators.btnExport).waitFor({ state: 'visible' });
-
 	}
 
 	async saveButton() {
@@ -40,18 +39,17 @@ export class SettingPage extends BasePage {
 		await this.clickBtnClearAllData();
 
 		await this.validateShowMsgClearItemSuccess();
-
 	}
 
 	async clickBtnClearAllData() {
-		this.page.once('dialog', async dialog => {
+		this.page.once('dialog', async (dialog) => {
 			console.log('Dialog:', dialog.message());
 			await dialog.accept();
 		});
 
-		await this.page.locator('//div[@class=\'set-menu-item\' and contains(., \'Clear All Data\')]').click();
-
-
+		await this.page
+			.locator("//div[@class='set-menu-item' and contains(., 'Clear All Data')]")
+			.click();
 	}
 
 	async chooseFileToImport(fileDir: string) {

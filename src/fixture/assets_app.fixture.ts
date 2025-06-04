@@ -1,12 +1,12 @@
 import { test as baseTest } from '@playwright/test';
-import { HomePage } from '../pages/modules/home_page';
 import { getEnvTestVersion } from '../utils/setup';
-import { CommonComponent } from '../pages/modules/common';
-import { AddEditPage } from '../pages/modules/add_edit_page';
-import { SearchPage } from '../pages/modules/search_page';
-import { SettingPage } from '../pages/modules/setting_page';
-import { LandingPage } from '../pages/modules/landing_page';
-import {DetailPage} from '../pages/modules/detail_page';
+import { CommonComponent } from '../pages/assets_app/modules/common';
+import { HomePage } from '../pages/assets_app/modules/home_page';
+import { DetailPage } from '../pages/assets_app/modules/detail_page';
+import { AddEditPage } from '../pages/assets_app/modules/add_edit_page';
+import { SearchPage } from '../pages/assets_app/modules/search_page';
+import { SettingPage } from '../pages/assets_app/modules/setting_page';
+import { LandingPage } from '../pages/assets_app/modules/landing_page';
 
 type TestFixtures = {
 	homePage: HomePage;
@@ -21,9 +21,9 @@ type TestFixtures = {
 // let version = (process.env.VERSION ? process.env.VERSION : 10) as number;
 // console.log('App version: ', version);
 
-const APP_URL = getEnvTestVersion(7);
+const APP_URL = getEnvTestVersion('assets', 7);
 
-export const test = baseTest.extend<TestFixtures>({
+export const assetsTest = baseTest.extend<TestFixtures>({
 	detailPage: async ({ page, context }, use) => {
 		const detailPage = new DetailPage(page, APP_URL, context);
 		await use(detailPage);
@@ -48,8 +48,7 @@ export const test = baseTest.extend<TestFixtures>({
 		const landingPage = new LandingPage(page, APP_URL, context);
 		await use(landingPage);
 		console.log('Viewport Size:', await page.viewportSize());
-    //console.log('Extra HTTP Headers:', await page.context());
-
+		//console.log('Extra HTTP Headers:', await page.context());
 	},
 	commonComponent: async ({ page, context }, use) => {
 		const commonComponent = new CommonComponent(page, APP_URL, context);

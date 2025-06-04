@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { BasePage } from '../../../base_page';
+import { BasePage } from '../../../../base_page';
 
 export class BottomNav extends BasePage {
 	constructor(page: Page, domain: string, context: any = null) {

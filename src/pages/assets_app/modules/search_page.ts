@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test';
 
-import { BasePage } from '../base_page';
+import { BasePage } from '../../base_page';
 
 export class SearchPage extends BasePage {
 	constructor(page: Page, domain: string, context: any = null) {

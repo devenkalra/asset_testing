@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { BasePage } from '../../base_page';
+import { BasePage } from '../../../base_page';
 import { BottomNav } from './components/bottom_nav';
 import { ButtonAdd } from './components/button_add';
 import { DetailPage } from './components/detail_page';

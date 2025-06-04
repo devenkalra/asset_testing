@@ -1,7 +1,16 @@
-import { WEBSITE_URL } from '../constant/env';
+// http://localhost/apps/?app=knowledge?page=LandingPage&mode=test7
+// https://bldrdojo.com/apps/?app=assets&page=LandingPage&mode=test1
 
-//http://localhost/apps/?page=LandingPage&mode=test7&app=asset&
+const AppName = ['assets', 'knowledge'] as const;
 
-export const getEnvTestVersion = (testVersion: number = 8): string => {
-	return `${WEBSITE_URL}&page=LandingPage&mode=test${testVersion}`;
+export const getAppUrl = (appName: (typeof AppName)[number]) => {
+	return `https://${process.env.BASE_URL}/apps/?app=${appName}`;
+};
+
+export const getEnvTestVersion = (
+	appName: (typeof AppName)[number],
+	testVersion: number = 8,
+): string => {
+	const url = getAppUrl(appName);
+	return `${url}&page=LandingPage&mode=test${testVersion}`;
 };

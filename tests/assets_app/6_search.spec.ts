@@ -1,21 +1,20 @@
-import { test } from '../src/fixture/core.fixture';
-import { getRandomImgFileOf } from '../src/utils/file';
-import { getCurrentUnixTime } from '../src/utils/time';
+import { assetsTest } from '../../src/fixture/assets_app.fixture';
+import { getRandomImgFileOf } from '../../src/utils/file';
+import { getCurrentUnixTime } from '../../src/utils/time';
 
-test.describe('Search test', async () => {
-	test('Can search for Correct Item @TC_SEARCH_01', async ({
+assetsTest.describe('Search test', async () => {
+	assetsTest('Can search for Correct Item @TC_SEARCH_01', async ({
 		homePage,
 		commonComponent,
 		addEditPage,
 		searchPage,
 		landingPage,
-		settingPage
+		settingPage,
 	}) => {
 		const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 
-		await test.step('1. Create test Area', async () => {
-				await homePage.clearAllData(landingPage, settingPage, commonComponent);
-
+		await assetsTest.step('1. Create test Area', async () => {
+			await homePage.clearAllData(landingPage, settingPage, commonComponent);
 
 			await homePage.validateHomePageLoaded();
 			await commonComponent.bottomNav.validateShowBottomNav();
@@ -29,7 +28,7 @@ test.describe('Search test', async () => {
 			await homePage.validateAreaShowOnHomePage(testAreaName);
 		});
 
-		await test.step('2. Go to search page and search for created area', async () => {
+		await assetsTest.step('2. Go to search page and search for created area', async () => {
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.bottomNav.clickSearchIcon();
 			await searchPage.validateShowSearchPage();
@@ -39,7 +38,7 @@ test.describe('Search test', async () => {
 			await searchPage.validateLocationShowOnSearchResult(testAreaName);
 		});
 
-		await test.step('3. Validate search return correct result', async () => {
+		await assetsTest.step('3. Validate search return correct result', async () => {
 			await searchPage.validateSearchHaveResult();
 			await searchPage.validateLocationShowOnSearchResult(testAreaName);
 		});
