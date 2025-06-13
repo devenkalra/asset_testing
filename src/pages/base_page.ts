@@ -25,7 +25,7 @@ export class BasePage {
 		await settingPage.clearAllData();
 	}
 
-	async gotoHomePage(landingPage, commonComponent) {
+	async gotoHomePageX(landingPage, commonComponent) {
 		await landingPage.goto('');
 		// await landingPage.validateShowLandingPage();
 		// await landingPage.clickBtnOpenAssetApp();
@@ -70,6 +70,10 @@ export class BasePage {
 		new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
+	async gotoHomePage(){
+		await this.goto('');
+		await this.clickLocator('.bottom-menu span', 0);
+	}
 	async clickLocator(locator: string, index = 0, isForce = false) {
 		let element = await this.getLocator(locator, index);
 		const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));

@@ -11,15 +11,11 @@ assetsTest.describe('Navigation test', async () => {
 			const testBoxName: string = `Test box ${getCurrentUnixTime()}`;
 
 			await assetsTest.step('1. Create 2 test Areas', async () => {
+				await homePage.gotoHomePage();
 				await homePage.clearAllData(landingPage, settingPage, commonComponent);
-
-				await landingPage.goto('');
-				await landingPage.validateShowLandingPage();
-				await landingPage.clickBtnOpenAssetApp();
-				await commonComponent.bottomNav.validateShowBottomNav();
 				await homePage.validateHomePageLoaded();
-				await commonComponent.bottomNav.validateShowBottomNav();
-				await commonComponent.buttonAdd.validateShowAddButtons();
+				await homePage.gotoHomePage();
+
 				await commonComponent.buttonAdd.clickBtnAddMultiple();
 				await addEditPage.inputName(testAreaName);
 				await addEditPage.selectManualUploadMethod();
@@ -77,7 +73,7 @@ assetsTest.describe('Navigation test', async () => {
 		'3 bottom navigation icons working correct @TC_NAV_02',
 		async ({ homePage, commonComponent, searchPage, landingPage, settingPage }) => {
 			await assetsTest.step('1. Can navigate to Search by bottom navigation', async () => {
-				await homePage.clearAllData(landingPage, settingPage, commonComponent);
+				await homePage.gotoHomePage();
 
 				await commonComponent.bottomNav.clickSettingIcon();
 				await settingPage.validateShowSettingPage();
@@ -91,11 +87,7 @@ assetsTest.describe('Navigation test', async () => {
 			});
 
 			await assetsTest.step('2. Can navigate to Setting page by bottom navigation', async () => {
-				await landingPage.goto('');
-				await landingPage.validateShowLandingPage();
-				await landingPage.clickBtnOpenAssetApp();
-
-				await commonComponent.bottomNav.validateShowBottomNav();
+				await homePage.gotoHomePage();
 				await commonComponent.bottomNav.clickSettingIcon();
 				await settingPage.validateShowSettingPage();
 			});

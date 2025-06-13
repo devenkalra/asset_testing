@@ -43,7 +43,9 @@ assetsTest.describe('Home test', async () => {
 				const expectTestAreaName2 = testAreaName2.replace(/\s+/g, ' ').trim();
 
 				await assetsTest.step('1. Go to Home page', async () => {
+					await homePage.gotoHomePage();
 					await homePage.clearAllData(landingPage, settingPage, commonComponent);
+					await homePage.gotoHomePage();
 					await homePage.validateHomePageLoaded();
 				});
 
@@ -123,7 +125,7 @@ assetsTest.describe('Home test', async () => {
 			let testAreaName: string = `Test mutiple area ${getCurrentUnixTime()}`;
 
 			await assetsTest.step('1. Go to Home page', async () => {
-				await homePage.gotoHomePage(landingPage, commonComponent);
+				await homePage.gotoHomePage();
 				await homePage.validateHomePageLoaded();
 				await homePage.validateHomePageLoaded();
 			});
@@ -148,7 +150,7 @@ assetsTest.describe('Home test', async () => {
 		'User can view or exit fullsize of area @TC_HOME_05',
 		async ({ settingPage, homePage, commonComponent, landingPage }) => {
 			await assetsTest.step('1. Go to Home page', async () => {
-				await homePage.gotoHomePage(landingPage, commonComponent);
+				await homePage.gotoHomePage();
 				await homePage.validateHomePageLoaded();
 				await commonComponent.bottomNav.validateShowBottomNav();
 			});
@@ -177,7 +179,7 @@ assetsTest.describe('Home test', async () => {
 			let testAreaDesc: string = faker.lorem.sentences();
 
 			await assetsTest.step('1. Go to Home page', async () => {
-				await homePage.gotoHomePage(landingPage, commonComponent);
+				await homePage.gotoHomePage();
 				await homePage.validateHomePageLoaded();
 				await commonComponent.bottomNav.validateShowBottomNav();
 			});

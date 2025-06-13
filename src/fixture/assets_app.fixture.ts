@@ -9,6 +9,7 @@ import { SettingPage } from '../pages/assets_app/modules/setting_page';
 import { LandingPage } from '../pages/assets_app/modules/landing_page';
 
 type TestFixtures = {
+	basePage: BasePage;
 	homePage: HomePage;
 	detailPage: DetailPage;
 	addEditPage: AddEditPage;

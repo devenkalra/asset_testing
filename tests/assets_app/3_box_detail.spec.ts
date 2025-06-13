@@ -13,9 +13,11 @@ assetsTest.describe('Box detail test', async () => {
 			const testItemName: string = `Test item ${getCurrentUnixTime()}`;
 
 			await assetsTest.step('1. Create and go to Detail of test Area', async () => {
-				await homePage.clearAllData(landingPage, settingPage, commonComponent);
 
+				await homePage.gotoHomePage();
+				await homePage.clearAllData(landingPage, settingPage, commonComponent);
 				await homePage.validateHomePageLoaded();
+				await homePage.gotoHomePage();
 				await commonComponent.bottomNav.validateShowBottomNav();
 				await commonComponent.buttonAdd.validateShowAddButtons();
 				await commonComponent.buttonAdd.clickBtnAddMultiple();

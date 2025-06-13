@@ -14,7 +14,10 @@ assetsTest.describe('Setting test', async () => {
 			const testAreaName: string = `Test area ${testTime}`;
 
 			await assetsTest.step('1. Create test Area', async () => {
+
+				await homePage.gotoHomePage();
 				await homePage.clearAllData(landingPage, settingPage, commonComponent);
+				await homePage.gotoHomePage();
 				await homePage.validateHomePageLoaded();
 				await commonComponent.bottomNav.validateShowBottomNav();
 				await commonComponent.buttonAdd.validateShowAddButtons();
@@ -56,11 +59,9 @@ assetsTest.describe('Setting test', async () => {
 
 			await assetsTest.step('3. Clear all data, validate home page blank', async () => {
 				await settingPage.clickBtnClearAllData();
-
 				await settingPage.validateShowMsgClearItemSuccess();
-				await landingPage.goto('');
-				await landingPage.validateShowLandingPage();
-				await landingPage.clickBtnOpenAssetApp();
+				await homePage.gotoHomePage();
+
 				await commonComponent.bottomNav.validateShowBottomNav();
 				await homePage.validateHomePageLoaded();
 				await homePage.validateNoAreaShowOnHomePage();

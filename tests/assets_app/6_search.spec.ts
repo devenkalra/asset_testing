@@ -4,19 +4,26 @@ import { getCurrentUnixTime } from '../../src/utils/time';
 
 assetsTest.describe('Search test', async () => {
 	assetsTest('Can search for Correct Item @TC_SEARCH_01', async ({
-		homePage,
-		commonComponent,
-		addEditPage,
-		searchPage,
-		landingPage,
-		settingPage,
-	}) => {
+																																	 homePage,
+																																	 commonComponent,
+																																	 addEditPage,
+																																	 searchPage,
+																																	 landingPage,
+																																	 settingPage,
+																																 }) => {
 		const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 
 		await assetsTest.step('1. Create test Area', async () => {
+
+
+			await homePage.gotoHomePage();
+
 			await homePage.clearAllData(landingPage, settingPage, commonComponent);
 
 			await homePage.validateHomePageLoaded();
+			await homePage.gotoHomePage();
+
+
 			await commonComponent.bottomNav.validateShowBottomNav();
 			await commonComponent.buttonAdd.validateShowAddButtons();
 			await commonComponent.buttonAdd.clickBtnAddMultiple();

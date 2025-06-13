@@ -11,14 +11,14 @@ assetsTest.describe('Area detail test', () => {
 	assetsTest(
 		'Can add Area, Box, Item inside Area @TC_AREA_01',
 		async ({
-			settingPage,
+						 settingPage,
 
-			homePage,
-			detailPage,
-			commonComponent,
-			addEditPage,
-			landingPage,
-		}) => {
+						 homePage,
+						 detailPage,
+						 commonComponent,
+						 addEditPage,
+						 landingPage,
+					 }) => {
 			const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 			const testAreaName2: string = `Test area 2 ${getCurrentUnixTime() + getRandomBetween(1, 10)}`;
 			const testBoxName: string = `Test box ${getCurrentUnixTime()}`;
@@ -28,9 +28,12 @@ assetsTest.describe('Area detail test', () => {
 			let url: string = '';
 
 			await assetsTest.step('1. Create and go to Detail of test Area', async () => {
+				await homePage.gotoHomePage();
+
 				await homePage.clearAllData(landingPage, settingPage, commonComponent);
 
 				await homePage.validateHomePageLoaded();
+				await homePage.gotoHomePage();
 				await commonComponent.bottomNav.validateShowBottomNav();
 				await commonComponent.buttonAdd.validateShowAddButtons();
 				await commonComponent.buttonAdd.clickBtnAddMultiple();
@@ -146,28 +149,27 @@ assetsTest.describe('Area detail test', () => {
 	assetsTest(
 		'Can add Mutiple Areas, Boxes, Items inside Area @TC_AREA_02',
 		async ({
-			settingPage,
-			homePage,
-			detailPage: DetailPage,
-			commonComponent,
-			addEditPage,
-			landingPage,
-		}) => {
+						 settingPage,
+						 homePage,
+						 detailPage: DetailPage,
+						 commonComponent,
+						 addEditPage,
+						 landingPage,
+					 }) => {
 			const testAreaName: string = `Test area ${getCurrentUnixTime()}`;
 			const testMultiAreaName: string = `Test multi area ${getCurrentUnixTime()}`;
 			const testMultiBoxName: string = `Test multi box ${getCurrentUnixTime()}`;
 			const testMultiItemName: string = `Test multi item ${getCurrentUnixTime()}`;
 
 			await assetsTest.step('1. Create and go to Detail of test Area', async () => {
+
+				await homePage.gotoHomePage();
+
 				await homePage.clearAllData(landingPage, settingPage, commonComponent);
 
-				await landingPage.goto('');
-				await landingPage.validateShowLandingPage();
-				await landingPage.clickBtnOpenAssetApp();
-				await commonComponent.bottomNav.validateShowBottomNav();
 				await homePage.validateHomePageLoaded();
-				await commonComponent.bottomNav.validateShowBottomNav();
-				await commonComponent.buttonAdd.validateShowAddButtons();
+				await homePage.gotoHomePage();
+
 				await commonComponent.buttonAdd.clickBtnAddMultiple();
 				await addEditPage.inputName(testAreaName);
 				await addEditPage.selectManualUploadMethod();
