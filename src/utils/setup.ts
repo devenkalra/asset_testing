@@ -4,6 +4,12 @@
 const AppName = ['assets', 'knowledge'] as const;
 
 export const getAppUrl = (appName: (typeof AppName)[number]) => {
+	if (!process.env.BASE_URL) {
+		throw new Error('BASE_URL environment variable is not set');
+	}
+	if(process.env.BASE_URL.startsWith('localhost'))
+		return `http://${process.env.BASE_URL}/apps/?app=${appName}`;
+
 	return `https://${process.env.BASE_URL}/apps/?app=${appName}`;
 };
 
