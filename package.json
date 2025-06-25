@@ -31,7 +31,7 @@
 		"test-assets-local": "npx cross-env ENV=local npx playwright test --headed tests/assets_app --project=iphone-chromium",
 		"test-assets-public": "npx cross-env ENV=public npx playwright test --headed tests/assets_app --project=iphone-chromium",
 		"test-knowledge-local": "npx cross-env ENV=local npx playwright test --headed tests/knowledge_app --project=google-chrome",
-		"test-knowledge-public": "npx cross-env ENV=public npx playwright test --headed tests/knowledge_app --project=iphgoogle-chrome"
+		"test-knowledge-public": "npx cross-env ENV=public npx playwright test --headed tests/knowledge_app --project=google-chrome"
 	},
 	"directories": {
 		"test": "tests"
