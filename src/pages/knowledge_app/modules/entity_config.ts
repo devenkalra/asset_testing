@@ -46,7 +46,7 @@ export const KNOWLEDGE_ENTITY = [
 	},
 	{
 		item: 'Note',
-		fields: 'Display|Description|Tags|DateTime|Photos|Url|Attachment',
+		fields: 'Display|Description|Tags|Date Time|Photos|Url|Attachment',
 	},
 	{
 		item: 'List',

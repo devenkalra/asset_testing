@@ -7,6 +7,7 @@ import { AddEditPage } from '../pages/assets_app/modules/add_edit_page';
 import { SearchPage } from '../pages/assets_app/modules/search_page';
 import { SettingPage } from '../pages/assets_app/modules/setting_page';
 import { LandingPage } from '../pages/assets_app/modules/landing_page';
+import { BasePage } from '../pages/base_page';
 
 type TestFixtures = {
 	basePage: BasePage;

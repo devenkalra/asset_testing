@@ -22,6 +22,9 @@ export class EntityDetail extends BasePage {
 			return `//span[text()='${fieldName}']/ancestor::div[@type='attributeDisplay']`;
 		},
 		btnGoToDetailView: "//div[@panelType='EntityEdit']//a[text()='Details']",
+		btnGoToEditView: "//div[@panelType='EntityDetail']//a[text()='Edit']",
+		panelEditView: "//div[@panelType='EntityEdit']",
+		panelDetailView: "//div[@panelType='EntityDetail']",
 		btnGoToRelationsView: "//div[@panelType='EntityDetail']//a[text()='Relations']",
 		btnAddRelation: "//div[@type='RelationList']//div[text()='Add Relation']",
 		dropDownSelectTypeRelation: '#RelationSelect_1',
@@ -46,6 +49,18 @@ export class EntityDetail extends BasePage {
 
 	async clickBtnGotoDetailView() {
 		await this.clickLocator(this.locators.btnGoToDetailView);
+	}
+
+	async clickBtnGotoEditView() {
+		await this.clickLocator(this.locators.btnGoToEditView);
+	}
+
+	async validateCurrentModeIsDetailView() {
+		await this.validateElementVisible(this.locators.panelDetailView);
+	}
+
+	async validateCurrentModeIsEditView() {
+		await this.validateElementVisible(this.locators.panelEditView);
 	}
 
 	async clickBtnGotoRelationsView() {

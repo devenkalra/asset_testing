@@ -14,7 +14,7 @@ export class TagPanel extends BasePage {
 
 	private locators = {
 		tagPanel:
-			"//div[text()='Tags']/following::ul[@role='tree']/ancestor::div[@class='column-content']",
+			"//div[span[text()='Tags']]/following::ul[@role='tree']/ancestor::div[@class='column-content']",
 		listParentTags: "//div[contains(@class, 'left-column')]//ul[@role='tree']/li",
 		tagElementByTagName: (tagName: string) => {
 			return `//div[contains(@class, 'left-column')]//p[contains(text(),'${tagName}')]`;

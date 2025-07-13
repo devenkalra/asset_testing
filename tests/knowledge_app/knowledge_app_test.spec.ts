@@ -21,24 +21,15 @@ knowledgeTest.describe('Sample test Knowledge @Knowledge_app_test', async () => 
 			},
 		);
 
-		await knowledgeTest.step('2. Validate sort and order working correct', async () => {
-			await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Asc');
-			await mainKnowledgeApp.entityList.clickOnOrderType();
-			await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Desc');
-			await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Display');
-			await mainKnowledgeApp.entityList.selectSortType('Modified');
-			await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Modified');
-		});
-
+		const listCreatedEntity: string[] = [];
 		await knowledgeTest.step(
-			'3. Valite can create all availiable entity and display correct fields',
+			'2. Valite can create all availiable entity and display correct fields',
 			async () => {
 				for (let i = 0; i < ENTITY_LIST.length; i++) {
 					const entityName = `T_Entity ${ENTITY_LIST[i]} ${getCurrentUnixTime()}`;
 					await mainKnowledgeApp.selectEntityType(ENTITY_LIST[i]);
 					await mainKnowledgeApp.inputEntityName(entityName);
 					await mainKnowledgeApp.clickBtnCreateEntity();
-					await mainKnowledgeApp.entityList.validateEntityListHas(entityName, ENTITY_LIST[i]);
 					await mainKnowledgeApp.entityDetail.validateShowEntityTitleOf(entityName, ENTITY_LIST[i]);
 
 					const avlField =
@@ -47,98 +38,186 @@ knowledgeTest.describe('Sample test Knowledge @Knowledge_app_test', async () => 
 					for (let j = 0; j < fieldArr.length; j++) {
 						await mainKnowledgeApp.validateShowField(fieldArr[j]);
 					}
+					listCreatedEntity.push(entityName);
 				}
 			},
 		);
-	});
 
-	knowledgeTest('Verify can create parent tag @TC_K_02', async ({ mainKnowledgeApp }) => {
-		const selectedEntity = getRandomEntity();
-		const testTag = `T_Tag ${selectedEntity} ${getCurrentUnixTime()}`;
-		const testEntity = `T_Entity ${selectedEntity} ${getCurrentUnixTime()}`;
-
-		await knowledgeTest.step('1. Create random Entity', async () => {
-			await mainKnowledgeApp.goto('');
-			await mainKnowledgeApp.clickBtnNew();
-			await mainKnowledgeApp.validateShowPanelCreateEntity();
+		await knowledgeTest.step('3. Validate sort and order working correct', async () => {
 			await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Asc');
 			await mainKnowledgeApp.entityList.clickOnOrderType();
 			await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Desc');
 			await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Display');
 			await mainKnowledgeApp.entityList.selectSortType('Modified');
 			await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Modified');
-
-			await mainKnowledgeApp.selectEntityType(selectedEntity);
-			await mainKnowledgeApp.inputEntityName(testEntity);
-			await mainKnowledgeApp.clickBtnCreateEntity();
-			await mainKnowledgeApp.entityList.validateEntityListHas(testEntity, selectedEntity);
-			await mainKnowledgeApp.entityDetail.validateShowEntityTitleOf(testEntity, selectedEntity);
-
-			const avlField =
-				KNOWLEDGE_ENTITY.find((entity) => entity.item == selectedEntity)?.fields || '';
-			const fieldArr = getEntityAvailableFields(avlField);
-			for (let j = 0; j < fieldArr.length; j++) {
-				await mainKnowledgeApp.validateShowField(fieldArr[j]);
-			}
 		});
-		await knowledgeTest.step('2. Create Tag, validate created Tag show on tag tree', async () => {
-			await mainKnowledgeApp.inputTextToFieldName('Tags', testTag);
-			await mainKnowledgeApp.entityDetail.clickBtnGotoDetailView();
-			await mainKnowledgeApp.tagPanel.validateShowParentTag(testTag, 1);
+
+		await knowledgeTest.step('4. Validate all created entites shown on entity list', async () => {
+			for (let i = 0; i < listCreatedEntity.length; i++) {
+				await mainKnowledgeApp.entityList.validateEntityListHas(
+					listCreatedEntity[i],
+					ENTITY_LIST[i],
+				);
+			}
 		});
 	});
 
-	knowledgeTest('Verify can create tree tag @TC_K_03', async ({ mainKnowledgeApp }) => {
-		const selectedEntity = getRandomEntity();
-		const testParentTag = `T_Parent_Tag 1 ${selectedEntity} ${getCurrentUnixTime()}`;
-		const testChildTag1 = `T_Child_Tag 1 ${selectedEntity} ${getCurrentUnixTime()}`;
-		const testChildTag2 = `T_Child_Tag 2 ${selectedEntity} ${getCurrentUnixTime()}`;
-		const testEntity = `T_Entity ${selectedEntity} ${getCurrentUnixTime()}`;
+	knowledgeTest(
+		'Verify can create and update parent tag @TC_K_02',
+		async ({ mainKnowledgeApp }) => {
+			const selectedEntity = getRandomEntity();
+			const testTag = `T_Tag ${selectedEntity} ${getCurrentUnixTime()}`;
+			const newTag = `T_Tag_new ${selectedEntity} ${getCurrentUnixTime()}`;
+			const testEntity = `T_Entity ${selectedEntity} ${getCurrentUnixTime()}`;
 
-		await knowledgeTest.step('1. Create random Entity', async () => {
-			await mainKnowledgeApp.goto('');
-			await mainKnowledgeApp.clickBtnNew();
-			await mainKnowledgeApp.validateShowPanelCreateEntity();
-			await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Asc');
-			await mainKnowledgeApp.entityList.clickOnOrderType();
-			await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Desc');
-			await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Display');
-			await mainKnowledgeApp.entityList.selectSortType('Modified');
-			await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Modified');
+			await knowledgeTest.step('1. Create random Entity', async () => {
+				await mainKnowledgeApp.goto('');
+				await mainKnowledgeApp.clickBtnNew();
+				await mainKnowledgeApp.validateShowPanelCreateEntity();
 
-			await mainKnowledgeApp.selectEntityType(selectedEntity);
-			await mainKnowledgeApp.inputEntityName(testEntity);
-			await mainKnowledgeApp.clickBtnCreateEntity();
-			await mainKnowledgeApp.entityList.validateEntityListHas(testEntity, selectedEntity);
-			await mainKnowledgeApp.entityDetail.validateShowEntityTitleOf(testEntity, selectedEntity);
-			await mainKnowledgeApp.clickBtnNew();
+				await mainKnowledgeApp.selectEntityType(selectedEntity);
+				await mainKnowledgeApp.inputEntityName(testEntity);
+				await mainKnowledgeApp.clickBtnCreateEntity();
+				await mainKnowledgeApp.entityDetail.validateShowEntityTitleOf(testEntity, selectedEntity);
 
-			const avlField =
-				KNOWLEDGE_ENTITY.find((entity) => entity.item == selectedEntity)?.fields || '';
-			const fieldArr = getEntityAvailableFields(avlField);
-			for (let j = 0; j < fieldArr.length; j++) {
-				await mainKnowledgeApp.validateShowField(fieldArr[j]);
-			}
-		});
-		await knowledgeTest.step('2. Create Tag, validate created Tag show on tag tree', async () => {
-			await mainKnowledgeApp.inputTextToFieldName(
-				'Tags',
-				`${testParentTag}/${testChildTag1}/${testChildTag2}`,
+				await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Asc');
+				await mainKnowledgeApp.entityList.clickOnOrderType();
+				await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Desc');
+				await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Display');
+				await mainKnowledgeApp.entityList.selectSortType('Modified');
+				await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Modified');
+				await mainKnowledgeApp.entityList.validateEntityListHas(testEntity, selectedEntity);
+
+				await mainKnowledgeApp.clickBtnNew();
+
+				const avlField =
+					KNOWLEDGE_ENTITY.find((entity) => entity.item == selectedEntity)?.fields || '';
+				const fieldArr = getEntityAvailableFields(avlField);
+				for (let j = 0; j < fieldArr.length; j++) {
+					await mainKnowledgeApp.validateShowField(fieldArr[j]);
+				}
+			});
+			await knowledgeTest.step('2. Create Tag, validate created Tag show on tag tree', async () => {
+				await mainKnowledgeApp.inputTextToFieldName('Tags', testTag);
+				await mainKnowledgeApp.entityDetail.clickBtnGotoDetailView();
+				await mainKnowledgeApp.tagPanel.validateShowParentTag(testTag, 1);
+			});
+
+			await knowledgeTest.step(
+				'3. Update Tag, validate previous tag display as 0 and new tag display as 1',
+				async () => {
+					await mainKnowledgeApp.entityDetail.clickBtnGotoEditView();
+					await mainKnowledgeApp.inputTextToFieldName('Tags', newTag);
+					await mainKnowledgeApp.entityDetail.clickBtnGotoDetailView();
+					await mainKnowledgeApp.tagPanel.validateShowParentTag(testTag, 0);
+					await mainKnowledgeApp.tagPanel.validateShowParentTag(newTag, 1);
+				},
 			);
-			await mainKnowledgeApp.entityDetail.clickBtnGotoDetailView();
-			await mainKnowledgeApp.tagPanel.validateShowParentTag(testParentTag, 1);
-			await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testParentTag);
-			await mainKnowledgeApp.tagPanel.validateTagNameShow(testChildTag1);
-			await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testChildTag1);
-			await mainKnowledgeApp.tagPanel.validateTagNameShow(testChildTag2);
+		},
+	);
 
-			await mainKnowledgeApp.tagPanel.validateShowTagTree([
-				{ tagName: testParentTag, tagQuantity: 1 },
-				{ tagName: testChildTag1, tagQuantity: 1 },
-				{ tagName: testChildTag2, tagQuantity: 1 },
-			]);
-		});
-	});
+	knowledgeTest(
+		'Verify can create tree tag and update multiple tree tags @TC_K_03',
+		async ({ mainKnowledgeApp }) => {
+			const selectedEntity = getRandomEntity();
+			const testParentTag = `T_Parent_Tag 1 ${selectedEntity} ${getCurrentUnixTime()}`;
+			const testChildTag1 = `T_Child_Tag 1 ${selectedEntity} ${getCurrentUnixTime()}`;
+			const testChildTag2 = `T_Child_Tag 2 ${selectedEntity} ${getCurrentUnixTime()}`;
+			const testEntity = `T_Entity ${selectedEntity} ${getCurrentUnixTime()}`;
+
+			const testNewParentTag = `T_Parent_Tag_new 1 ${selectedEntity} ${getCurrentUnixTime()}`;
+			const testNewChildTag1 = `T_Child_Tag_new 1 ${selectedEntity} ${getCurrentUnixTime()}`;
+			const testNewChildTag2 = `T_Child_Tag_new 2 ${selectedEntity} ${getCurrentUnixTime()}`;
+
+			await knowledgeTest.step('1. Create random Entity', async () => {
+				await mainKnowledgeApp.goto('');
+				await mainKnowledgeApp.clickBtnNew();
+				await mainKnowledgeApp.validateShowPanelCreateEntity();
+
+				await mainKnowledgeApp.selectEntityType(selectedEntity);
+				await mainKnowledgeApp.inputEntityName(testEntity);
+				await mainKnowledgeApp.clickBtnCreateEntity();
+				await mainKnowledgeApp.entityDetail.validateShowEntityTitleOf(testEntity, selectedEntity);
+
+				await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Asc');
+				await mainKnowledgeApp.entityList.clickOnOrderType();
+				await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Desc');
+				await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Display');
+				await mainKnowledgeApp.entityList.selectSortType('Modified');
+				await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Modified');
+				await mainKnowledgeApp.entityList.validateEntityListHas(testEntity, selectedEntity);
+
+				await mainKnowledgeApp.clickBtnNew();
+
+				const avlField =
+					KNOWLEDGE_ENTITY.find((entity) => entity.item == selectedEntity)?.fields || '';
+				const fieldArr = getEntityAvailableFields(avlField);
+				for (let j = 0; j < fieldArr.length; j++) {
+					await mainKnowledgeApp.validateShowField(fieldArr[j]);
+				}
+			});
+			await knowledgeTest.step('2. Create Tag, validate created Tag show on tag tree', async () => {
+				await mainKnowledgeApp.inputTextToFieldName(
+					'Tags',
+					`${testParentTag}/${testChildTag1}/${testChildTag2}`,
+				);
+
+				await mainKnowledgeApp.entityDetail.clickBtnGotoDetailView();
+				await mainKnowledgeApp.entityDetail.validateCurrentModeIsDetailView();
+
+				await mainKnowledgeApp.tagPanel.validateShowParentTag(testParentTag, 1);
+				await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testParentTag);
+				await mainKnowledgeApp.tagPanel.validateTagNameShow(testChildTag1);
+				await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testChildTag1);
+				await mainKnowledgeApp.tagPanel.validateTagNameShow(testChildTag2);
+
+				await mainKnowledgeApp.tagPanel.validateShowTagTree([
+					{ tagName: testParentTag, tagQuantity: 1 },
+					{ tagName: testChildTag1, tagQuantity: 1 },
+					{ tagName: testChildTag2, tagQuantity: 1 },
+				]);
+			});
+
+			await knowledgeTest.step(
+				'3. Update tree tags, validate previous tree tag display as 0 and new tree tag display as 1',
+				async () => {
+					await mainKnowledgeApp.entityDetail.clickBtnGotoEditView();
+					await mainKnowledgeApp.entityDetail.validateCurrentModeIsEditView();
+
+					await mainKnowledgeApp.inputTextToFieldName(
+						'Tags',
+						`${testNewParentTag}/${testNewChildTag1}/${testNewChildTag2}`,
+					);
+					await mainKnowledgeApp.entityDetail.clickBtnGotoDetailView();
+					await mainKnowledgeApp.entityDetail.validateCurrentModeIsDetailView();
+
+					await mainKnowledgeApp.tagPanel.validateShowParentTag(testParentTag, 0);
+					await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testParentTag);
+					await mainKnowledgeApp.tagPanel.validateTagNameShow(testChildTag1);
+					await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testChildTag1);
+					await mainKnowledgeApp.tagPanel.validateTagNameShow(testChildTag2);
+
+					await mainKnowledgeApp.tagPanel.validateShowTagTree([
+						{ tagName: testParentTag, tagQuantity: 0 },
+						{ tagName: testChildTag1, tagQuantity: 0 },
+						{ tagName: testChildTag2, tagQuantity: 0 },
+					]);
+
+					await mainKnowledgeApp.tagPanel.validateShowParentTag(testNewParentTag, 1);
+					await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testNewParentTag);
+					await mainKnowledgeApp.tagPanel.validateTagNameShow(testNewChildTag1);
+					await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testNewChildTag1);
+					await mainKnowledgeApp.tagPanel.validateTagNameShow(testNewChildTag2);
+
+					await mainKnowledgeApp.tagPanel.validateShowTagTree([
+						{ tagName: testNewParentTag, tagQuantity: 1 },
+						{ tagName: testNewChildTag1, tagQuantity: 1 },
+						{ tagName: testNewChildTag2, tagQuantity: 1 },
+					]);
+				},
+			);
+		},
+	);
 
 	knowledgeTest(
 		'Verify can create mutiple tags include parent tag and tree tag @TC_K_04',
@@ -154,18 +233,19 @@ knowledgeTest.describe('Sample test Knowledge @Knowledge_app_test', async () => 
 				await mainKnowledgeApp.goto('');
 				await mainKnowledgeApp.clickBtnNew();
 				await mainKnowledgeApp.validateShowPanelCreateEntity();
+
+				await mainKnowledgeApp.selectEntityType(selectedEntity);
+				await mainKnowledgeApp.inputEntityName(testEntity);
+				await mainKnowledgeApp.clickBtnCreateEntity();
+				await mainKnowledgeApp.entityDetail.validateShowEntityTitleOf(testEntity, selectedEntity);
+
 				await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Asc');
 				await mainKnowledgeApp.entityList.clickOnOrderType();
 				await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Desc');
 				await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Display');
 				await mainKnowledgeApp.entityList.selectSortType('Modified');
 				await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Modified');
-
-				await mainKnowledgeApp.selectEntityType(selectedEntity);
-				await mainKnowledgeApp.inputEntityName(testEntity);
-				await mainKnowledgeApp.clickBtnCreateEntity();
 				await mainKnowledgeApp.entityList.validateEntityListHas(testEntity, selectedEntity);
-				await mainKnowledgeApp.entityDetail.validateShowEntityTitleOf(testEntity, selectedEntity);
 				await mainKnowledgeApp.clickBtnNew();
 
 				const avlField =
@@ -208,18 +288,19 @@ knowledgeTest.describe('Sample test Knowledge @Knowledge_app_test', async () => 
 			await mainKnowledgeApp.goto('');
 			await mainKnowledgeApp.clickBtnNew();
 			await mainKnowledgeApp.validateShowPanelCreateEntity();
+
+			await mainKnowledgeApp.selectEntityType(selectedEntity);
+			await mainKnowledgeApp.inputEntityName(testEntity1);
+			await mainKnowledgeApp.clickBtnCreateEntity();
+			await mainKnowledgeApp.entityDetail.validateShowEntityTitleOf(testEntity1, selectedEntity);
+
 			await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Asc');
 			await mainKnowledgeApp.entityList.clickOnOrderType();
 			await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Desc');
 			await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Display');
 			await mainKnowledgeApp.entityList.selectSortType('Modified');
 			await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Modified');
-
-			await mainKnowledgeApp.selectEntityType(selectedEntity);
-			await mainKnowledgeApp.inputEntityName(testEntity1);
-			await mainKnowledgeApp.clickBtnCreateEntity();
 			await mainKnowledgeApp.entityList.validateEntityListHas(testEntity1, selectedEntity);
-			await mainKnowledgeApp.entityDetail.validateShowEntityTitleOf(testEntity1, selectedEntity);
 
 			await mainKnowledgeApp.inputEntityName(testEntity2);
 			await mainKnowledgeApp.clickBtnCreateEntity();
@@ -250,6 +331,46 @@ knowledgeTest.describe('Sample test Knowledge @Knowledge_app_test', async () => 
 				await mainKnowledgeApp.entityDetail.validateShowRelationList([
 					{ relationType: parsedRelationType, relationWith: testEntity1 },
 				]);
+			},
+		);
+	});
+
+	knowledgeTest('Verify can bulk delete all entities @TC_K_06', async ({ mainKnowledgeApp }) => {
+		const selectedEntity = 'Person';
+		const testEntity1 = `T Entity 1 ${selectedEntity} ${getCurrentUnixTime()}`;
+
+		await knowledgeTest.step('1. Create Entity', async () => {
+			await mainKnowledgeApp.goto('');
+			await mainKnowledgeApp.clickBtnNew();
+			await mainKnowledgeApp.validateShowPanelCreateEntity();
+
+			await mainKnowledgeApp.selectEntityType(selectedEntity);
+			await mainKnowledgeApp.inputEntityName(testEntity1);
+			await mainKnowledgeApp.clickBtnCreateEntity();
+			await mainKnowledgeApp.entityDetail.validateShowEntityTitleOf(testEntity1, selectedEntity);
+
+			await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Asc');
+			await mainKnowledgeApp.entityList.clickOnOrderType();
+			await mainKnowledgeApp.entityList.validateCurrentOrderTypeIs('Desc');
+			await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Display');
+			await mainKnowledgeApp.entityList.selectSortType('Modified');
+			await mainKnowledgeApp.entityList.validateCurrentSortTypeIs('Modified');
+			await mainKnowledgeApp.entityList.validateEntityListHas(testEntity1, selectedEntity);
+
+			const avlField =
+				KNOWLEDGE_ENTITY.find((entity) => entity.item == selectedEntity)?.fields || '';
+			const fieldArr = getEntityAvailableFields(avlField);
+			for (let j = 0; j < fieldArr.length; j++) {
+				await mainKnowledgeApp.validateShowField(fieldArr[j]);
+			}
+		});
+		await knowledgeTest.step(
+			'2. Bulk delete for all entities, validate show nothing in middle panel',
+			async () => {
+				await mainKnowledgeApp.entityList.clickBtnBulkEdit();
+				await mainKnowledgeApp.entityList.selectAllOptionsForBulk();
+				await mainKnowledgeApp.entityList.clickBtnDeleteSelected();
+				await mainKnowledgeApp.entityList.validateShowNothingInMiddlePanel();
 			},
 		);
 	});

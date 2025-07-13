@@ -18,6 +18,11 @@ export class EntityList extends BasePage {
 		selectionSortType: (sortType: string) => {
 			return `//input[@placeholder='Sort By']//following::ul/li[text()='${sortType}']`;
 		},
+		btnBulkEdit: 'button[id*=bulkEdit]',
+		btnSelectAll: "//a[text()='All']",
+		listCheckBoxEdit: 'input[id*=bulkEdit]',
+		btnDeleteSelected: "//button[text()='Delete Selected']",
+		listEntityItems: "//div[contains(@class, 'middle-column')]//span",
 	};
 
 	async validateShowEntityListPanel() {
@@ -46,6 +51,22 @@ export class EntityList extends BasePage {
 		await this.clickLocator(this.locators.inputSortType);
 		await this.clickLocator(this.locators.selectionSortType(sortType));
 		await this.validateCurrentSortTypeIs(sortType);
+	}
+
+	async clickBtnBulkEdit() {
+		await this.clickLocator(this.locators.btnBulkEdit);
+	}
+
+	async selectAllOptionsForBulk() {
+		await this.clickLocator(this.locators.btnSelectAll);
+	}
+
+	async clickBtnDeleteSelected() {
+		await this.clickLocator(this.locators.btnDeleteSelected);
+	}
+
+	async validateShowNothingInMiddlePanel() {
+		await this.validateElementNotVisible(this.locators.listEntityItems);
 	}
 }
 
