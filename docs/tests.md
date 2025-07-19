@@ -41,6 +41,8 @@ that tag no longer have that tag
 ## Right Panel
 - [ ] Fields with values shown in detail mode
 - [ ] Edit button enables editing fields
+- [ ] Each field can be edited with the appropriate data type. Special Characters should be 
+handled propely
 - [ ] Rich-text editor is enabled for description
 - [ ] Adding photos/attachments via upload works
 - [ ] Adding media via URL works
