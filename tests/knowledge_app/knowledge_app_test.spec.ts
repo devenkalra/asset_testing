@@ -179,7 +179,7 @@ knowledgeTest.describe('Sample test Knowledge @Knowledge_app_test', async () => 
 			});
 
 			await knowledgeTest.step(
-				'3. Update tree tags, validate previous tree tag display as 0 and new tree tag display as 1',
+				'3. Update tree tags, validate previous tree tag display as 0',
 				async () => {
 					await mainKnowledgeApp.entityDetail.clickBtnGotoEditView();
 					await mainKnowledgeApp.entityDetail.validateCurrentModeIsEditView();
@@ -192,30 +192,27 @@ knowledgeTest.describe('Sample test Knowledge @Knowledge_app_test', async () => 
 					await mainKnowledgeApp.entityDetail.validateCurrentModeIsDetailView();
 
 					await mainKnowledgeApp.tagPanel.validateShowParentTag(testParentTag, 0);
-					await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testParentTag);
-					await mainKnowledgeApp.tagPanel.validateTagNameShow(testChildTag1);
-					await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testChildTag1);
-					await mainKnowledgeApp.tagPanel.validateTagNameShow(testChildTag2);
-
 					await mainKnowledgeApp.tagPanel.validateShowTagTree([
 						{ tagName: testParentTag, tagQuantity: 0 },
 						{ tagName: testChildTag1, tagQuantity: 0 },
 						{ tagName: testChildTag2, tagQuantity: 0 },
 					]);
-
-					await mainKnowledgeApp.tagPanel.validateShowParentTag(testNewParentTag, 1);
-					await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testNewParentTag);
-					await mainKnowledgeApp.tagPanel.validateTagNameShow(testNewChildTag1);
-					await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testNewChildTag1);
-					await mainKnowledgeApp.tagPanel.validateTagNameShow(testNewChildTag2);
-
-					await mainKnowledgeApp.tagPanel.validateShowTagTree([
-						{ tagName: testNewParentTag, tagQuantity: 1 },
-						{ tagName: testNewChildTag1, tagQuantity: 1 },
-						{ tagName: testNewChildTag2, tagQuantity: 1 },
-					]);
 				},
 			);
+
+			await knowledgeTest.step('4. Validate new tree tag display as 1', async () => {
+				await mainKnowledgeApp.tagPanel.validateShowParentTag(testNewParentTag, 1);
+				await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testNewParentTag);
+				await mainKnowledgeApp.tagPanel.validateTagNameShow(testNewChildTag1);
+				await mainKnowledgeApp.tagPanel.expandTagElementByTagName(testNewChildTag1);
+				await mainKnowledgeApp.tagPanel.validateTagNameShow(testNewChildTag2);
+
+				await mainKnowledgeApp.tagPanel.validateShowTagTree([
+					{ tagName: testNewParentTag, tagQuantity: 1 },
+					{ tagName: testNewChildTag1, tagQuantity: 1 },
+					{ tagName: testNewChildTag2, tagQuantity: 1 },
+				]);
+			});
 		},
 	);
 
