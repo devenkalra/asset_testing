@@ -23,7 +23,7 @@ knowledgeTest.describe('Sample test Knowledge @Knowledge_app_test', async () => 
 
 		const listCreatedEntity: string[] = [];
 		await knowledgeTest.step(
-			'2. Valite can create all availiable entity and display correct fields',
+			'2. Validate can create all availiable entity and display correct fields',
 			async () => {
 				for (let i = 0; i < ENTITY_LIST.length; i++) {
 					const entityName = `T_Entity ${ENTITY_LIST[i]} ${getCurrentUnixTime()}`;

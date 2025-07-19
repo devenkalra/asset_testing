@@ -48,6 +48,11 @@ export class EntityDetail extends BasePage {
 	}
 
 	async clickBtnGotoDetailView() {
+		
+		
+		
+		
+		
 		await this.clickLocator(this.locators.btnGoToDetailView);
 	}
 
