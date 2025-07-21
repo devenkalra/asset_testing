@@ -70,15 +70,20 @@ export class BasePage {
 		new Promise((resolve) => setTimeout(resolve, ms));
 	}
 
-	async gotoHomePage(){
+	async gotoHomePage() {
 		await this.goto('');
 		await this.clickLocator('.bottom-menu span', 0);
 	}
+
 	async clickLocator(locator: string, index = 0, isForce = false) {
 		let element = await this.getLocator(locator, index);
 		const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 		await sleep(1000);
-		await element.click({ force: isForce });
+		try {
+			await element.click({ force: isForce });
+		} catch (error) {
+			throw error;
+		}
 	}
 
 	async clickElementByJS(locator: string) {
@@ -112,7 +117,12 @@ export class BasePage {
 	}
 
 	async validateElementVisible(locator: string, index = 0) {
-		await expect(this.getLocator(locator, index)).toBeVisible();
+		//console.log(locator);
+		try {
+			await expect(this.getLocator(locator, index)).toBeVisible();
+		} catch (error) {
+			throw error;
+		}
 	}
 
 	async validateElementNotVisible(locator: string) {
