@@ -14,25 +14,24 @@ export class EntityDetail extends BasePage {
 	}
 
 	private locators = {
-		entityDetailPanel: '.right-column .column-content',
-		entityTitleOf: (entityName: string, entityType: string) => {
-			return `//div[@panelType='EntityEdit']//b[text()='${entityName}' and text()='${entityType}']`;
-		},
+		entityDetailPanel: '.right-column',
+		entityEditTitle: '#entityEditTitle',
 		panelOfField: (fieldName: string) => {
 			return `//span[text()='${fieldName}']/ancestor::div[@type='attributeDisplay']`;
 		},
-		btnGoToDetailView: "//div[@panelType='EntityEdit']//a[text()='Details']",
-		btnGoToEditView: "//div[@panelType='EntityDetail']//a[text()='Edit']",
+		btnGoToDetailView: '.right-column .PartScrollFixedDiv button',
+		btnGoToEditView: '[id*=editEntityLink]',
 		panelEditView: "//div[@panelType='EntityEdit']",
-		panelDetailView: "//div[@panelType='EntityDetail']",
-		btnGoToRelationsView: "//div[@panelType='EntityDetail']//a[text()='Relations']",
-		btnAddRelation: "//div[@type='RelationList']//div[text()='Add Relation']",
+		panelDetailView: '.right-column',
+		// btnGoToRelationsView: "//div[@panelType='EntityDetail']//a[text()='Relations']",
+		btnAddRelation: "//div[@id='ShowRelations']//button[contains(text(), 'Add Relation')]",
 		dropDownSelectTypeRelation: '#RelationSelect_1',
 		listTypeRelation: '#RelationSelect_1 option',
 		inputSearchRelation: 'td:has(#RelationSelect_1)+td input',
-		listSearchResult: 'td:has(#RelationSelect_1)+td input+ul li',
-		btnSaveRelation: "//div[@type='RelationList']//button[text()='Save']",
-		listRelationShip: "//div[@type='RelationList']//table//tr",
+		listSearchResult: '#possibleRelations div',
+		btnSaveRelation: "//div[@id='ShowRelations']//button[text()='Save']",
+		listRelationShip: "//div[@id='ShowRelations']//table//tr",
+		btnAddTag: '#tag-create',
 	};
 
 	async validateShowEntityDetailPanel() {
@@ -40,7 +39,8 @@ export class EntityDetail extends BasePage {
 	}
 
 	async validateShowEntityTitleOf(entityName: string, entityType: string) {
-		await this.validateElementVisible(this.locators.entityTitleOf(entityName, entityType));
+		const entityNameFormat = `${entityName} (${entityType})`;
+		await this.validateElementHaveText(this.locators.entityEditTitle, entityNameFormat);
 	}
 
 	async validateShowField(fieldName: string) {
@@ -48,11 +48,6 @@ export class EntityDetail extends BasePage {
 	}
 
 	async clickBtnGotoDetailView() {
-		
-		
-		
-		
-		
 		await this.clickLocator(this.locators.btnGoToDetailView);
 	}
 
@@ -68,8 +63,12 @@ export class EntityDetail extends BasePage {
 		await this.validateElementVisible(this.locators.panelEditView);
 	}
 
-	async clickBtnGotoRelationsView() {
-		await this.clickLocator(this.locators.btnGoToRelationsView);
+	// async clickBtnGotoRelationsView() {
+	// 	await this.clickLocator(this.locators.btnGoToRelationsView);
+	// }
+
+	async clickBtnAddTag() {
+		await this.clickLocator(this.locators.btnAddTag);
 	}
 
 	async clickBtnAddRelation() {

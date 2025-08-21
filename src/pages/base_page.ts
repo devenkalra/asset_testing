@@ -101,10 +101,10 @@ export class BasePage {
 		await input.click();
 
 		// Select all text
-		await input.press('Control+A'); // Or 'Meta+A' on Mac
+		await this.page.keyboard.press('Control+A'); // Or 'Meta+A' on Mac
 
 		for (const char of text) {
-			await input.press(char === ' ' ? ' ' : char);
+			await this.page.keyboard.press(char === ' ' ? ' ' : char);
 		}
 	}
 
@@ -173,7 +173,7 @@ export class BasePage {
 		await expect(this.getLocator(locator)).toBeEnabled();
 	}
 
-	async validateElementIsNotEnable(locator: string) {
+	async validateElementIsDisable(locator: string) {
 		await expect(this.getLocator(locator)).toBeDisabled();
 	}
 

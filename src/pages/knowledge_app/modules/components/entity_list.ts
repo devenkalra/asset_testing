@@ -22,7 +22,7 @@ export class EntityList extends BasePage {
 		btnSelectAll: "//a[text()='All']",
 		listCheckBoxEdit: 'input[id*=bulkEdit]',
 		btnDeleteSelected: "//button[text()='Delete Selected']",
-		listEntityItems: "//div[contains(@class, 'middle-column')]//span",
+		listEntityItems: '.PartScrollScrollableDiv span',
 	};
 
 	async validateShowEntityListPanel() {
@@ -67,6 +67,10 @@ export class EntityList extends BasePage {
 
 	async validateShowNothingInMiddlePanel() {
 		await this.validateElementNotVisible(this.locators.listEntityItems);
+	}
+
+	async getAllListEntityItemName() {
+		return this.getLocators(this.locators.listEntityItems).allInnerTexts();
 	}
 }
 

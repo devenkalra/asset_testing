@@ -27,6 +27,8 @@ export class MainKnowledgeApp extends BasePage {
 		inputEntityName: '#createValue',
 		btnCreateEntity: "//input[@id='createValue']/following-sibling::button[text()='Execute']",
 		listEntityToCreate: '#createEntitySelect option',
+		btnSearch: "//button[text()='Search']",
+		dialogSearchEntity: '#EntitySearchDialog',
 	};
 
 	async clickBtnNew() {
@@ -58,5 +60,14 @@ export class MainKnowledgeApp extends BasePage {
 
 	async inputTextToFieldName(fieldName: string, text: string) {
 		await this.inputText(`${this.locators.panelOfField(fieldName)}//input`, text);
+	}
+
+	async clickBtnSearch() {
+		await this.clickLocator(this.locators.btnSearch);
+	}
+
+	async validateSearchPanelShow() {
+		await this.validateElementVisible(this.locators.panelOfField('Search'));
+		await this.validateElementVisible(this.locators.dialogSearchEntity);
 	}
 }
