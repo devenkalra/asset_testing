@@ -19,46 +19,46 @@ export const KNOWLEDGE_ENTITY = [
 	{
 		item: 'Person',
 		fields:
-			'Display|Description|Tags|Profession|Last Name|First Name|Phone|dob|E Mail|Photos|Url|Attachment',
+			'Display|Description|Tags|Profession|Last Name|First Name|Phone|E Mail|Photos|Url|Attachments',
 	},
-	{ item: 'Org', fields: 'Display|Description|Tags|Name|Kind|Photos|Url|Attachment' },
+	{ item: 'Org', fields: 'Display|Description|Tags|Name|Kind|Photos|Url|Attachments' },
 	{
 		item: 'Location',
 		fields:
-			'Display|Description|Tags|Address 1|Address 2|Postal Code|City|State|Country|Photos|Url|Attachment',
+			'Display|Description|Tags|Address 1|Address 2|Postal Code|City|State|Country|Photos|Url|Attachments',
 	},
-	{ item: 'Event', fields: 'Display|Description|Tags|heldOn|heldOnTZ|Photos|Url|Attachment' },
+	{ item: 'Event', fields: 'Display|Description|Tags|Photos|Url|Attachments' },
 	{
 		item: 'Movie',
-		fields: 'Display|Description|Tags|year|language|country|Photos|Url|Attachment',
+		fields: 'Display|Description|Tags|Photos|Url|Attachments',
 	},
 	{
 		item: 'Book',
-		fields: 'Display|Description|Tags|Year|Language|Country|Summary|Photos|Url|Attachment',
+		fields: 'Display|Description|Tags|Language|Country|Summary|Photos|Url|Attachments',
 	},
 	{
 		item: 'Asset',
-		fields: 'Display|Description|Tags|acquiredOn|Photos|Url|Attachment',
+		fields: 'Display|Description|Tags|Photos|Url|Attachments',
 	},
 	{
 		item: 'Container',
-		fields: 'Display|Description|Tags|Photos|Url|Attachment',
+		fields: 'Display|Description|Tags|Photos|Url|Attachments',
 	},
 	{
 		item: 'Note',
-		fields: 'Display|Description|Tags|Date Time|Photos|Url|Attachment',
+		fields: 'Display|Description|Tags|Photos|Url|Attachments',
 	},
 	{
 		item: 'List',
-		fields: 'Display|Description|Tags|Name|Photos|Url|Attachment',
+		fields: 'Display|Description|Tags|Name|Photos|Url|Attachments',
 	},
 	{
 		item: 'Category',
-		fields: 'Display|Description|Tags|Name|Value|Photos|Url|Attachment',
+		fields: 'Display|Description|Tags|Name|Value|Photos|Url|Attachments',
 	},
 	// {
 	// 	item: 'ListItem',
-	// 	fields: 'Display|Description|Tags|Name|Done|Photos|Url|Attachment',
+	// 	fields: 'Display|Description|Tags|Name|Done|Photos|Url|Attachments',
 	// },
 ];
 
